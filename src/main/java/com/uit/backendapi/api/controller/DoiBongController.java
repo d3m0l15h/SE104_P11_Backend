@@ -28,4 +28,14 @@ public class DoiBongController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping()
+    public DoiBong createDoiBong(@RequestBody DoiBong doiBong) {
+        return doiBongRepository.save(doiBong);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DoiBong> deleteDoiBong(@PathVariable Long id) {
+        doiBongRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }
