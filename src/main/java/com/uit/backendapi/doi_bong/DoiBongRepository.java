@@ -1,6 +1,5 @@
-package com.uit.backendapi.repositories;
+package com.uit.backendapi.doi_bong;
 
-import com.uit.backendapi.api.model.DoiBong;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DoiBongRepository extends JpaRepository<DoiBong, Long> {
