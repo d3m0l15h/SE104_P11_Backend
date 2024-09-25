@@ -1,8 +1,8 @@
 package com.uit.backendapi.lich;
 
-import com.uit.backendapi.api.model.DoiHinhRaSan;
-import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import com.uit.backendapi.doi_bong.DoiBong;
+import com.uit.backendapi.ket_qua.KetQuaThiDau;
+import com.uit.backendapi.models.DoiHinhRaSan;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "LichThiDau", schema = "dbo")
 public class LichThiDau {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

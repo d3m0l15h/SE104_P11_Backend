@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "MuaGiai", schema = "dbo")
 public class MuaGiai {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

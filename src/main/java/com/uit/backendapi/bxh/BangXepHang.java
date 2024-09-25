@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "BangXepHang", schema = "dbo")
 public class BangXepHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

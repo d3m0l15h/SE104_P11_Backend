@@ -1,7 +1,7 @@
 package com.uit.backendapi.doi_bong;
 
 import com.uit.backendapi.bxh.BangXepHang;
-import com.uit.backendapi.api.model.DoiHinhRaSan;
+import com.uit.backendapi.models.DoiHinhRaSan;
 import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import jakarta.persistence.*;
@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "DoiBong", schema = "dbo")
 public class DoiBong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,10 +61,10 @@ public class DoiBong {
     private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maDoiNha")
-    private Set<LichThiDau> lichThiDaus_doiNha = new LinkedHashSet<>();
+    private Set<LichThiDau> lichThiDaus_DoiNha = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maDoiKhach")
-    private Set<LichThiDau> lichThiDaus_doiKhach = new LinkedHashSet<>();
+    private Set<LichThiDau> lichThiDaus_DoiKhach = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "doiVoDich")
     private Set<MuaGiai> muaGiais = new LinkedHashSet<>();
@@ -164,20 +165,20 @@ public class DoiBong {
         this.doiHinhRaSans = doiHinhRaSans;
     }
 
-    public Set<LichThiDau> getLichThiDaus_doiNha() {
-        return lichThiDaus_doiNha;
+    public Set<LichThiDau> getLichThiDaus_DoiNha() {
+        return lichThiDaus_DoiNha;
     }
 
-    public void setLichThiDaus_doiNha(Set<LichThiDau> lichThiDaus_doiNha) {
-        this.lichThiDaus_doiNha = lichThiDaus_doiNha;
+    public void setLichThiDaus_DoiNha(Set<LichThiDau> lichThiDaus_DoiNha) {
+        this.lichThiDaus_DoiNha = lichThiDaus_DoiNha;
     }
 
-    public Set<LichThiDau> getLichThiDaus_doiKhach() {
-        return lichThiDaus_doiKhach;
+    public Set<LichThiDau> getLichThiDaus_DoiKhach() {
+        return lichThiDaus_DoiKhach;
     }
 
-    public void setLichThiDaus_doiKhach(Set<LichThiDau> lichThiDaus_doiKhach) {
-        this.lichThiDaus_doiKhach = lichThiDaus_doiKhach;
+    public void setLichThiDaus_DoiKhach(Set<LichThiDau> lichThiDaus_DoiKhach) {
+        this.lichThiDaus_DoiKhach = lichThiDaus_DoiKhach;
     }
 
     public Set<MuaGiai> getMuaGiais() {

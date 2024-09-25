@@ -1,10 +1,10 @@
-package com.uit.backendapi.api.model;
+package com.uit.backendapi.models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
 @Entity
-@Table(name = "QuiDinh")
+@Table(name = "QuiDinh", schema = "dbo")
 public class QuiDinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

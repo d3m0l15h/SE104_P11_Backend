@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "KetQuaThiDau", schema = "dbo")
 public class KetQuaThiDau {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

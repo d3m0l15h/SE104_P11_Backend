@@ -1,4 +1,4 @@
-package com.uit.backendapi.api.model;
+package com.uit.backendapi.models;
 
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.doi_bong.DoiBong;
@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "DoiHinhRaSan")
+@Table(name = "DoiHinhRaSan", schema = "dbo")
 public class DoiHinhRaSan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

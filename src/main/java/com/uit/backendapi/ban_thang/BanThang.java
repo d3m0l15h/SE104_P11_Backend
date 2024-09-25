@@ -8,6 +8,7 @@ import org.hibernate.annotations.Nationalized;
 import java.time.LocalTime;
 
 @Entity
+@Table(name = "BanThang", schema = "dbo")
 public class BanThang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

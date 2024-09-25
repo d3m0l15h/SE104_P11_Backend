@@ -1,4 +1,4 @@
-package com.uit.backendapi.api.model;
+package com.uit.backendapi.models;
 
 import com.uit.backendapi.cau_thu.CauThu;
 import jakarta.persistence.*;
@@ -6,7 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 @Entity
-@Table(name = "ChiTietDoiHinh")
+@Table(name = "ChiTietDoiHinh", schema = "dbo")
 public class ChiTietDoiHinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,11 +1,12 @@
 package com.uit.backendapi.thay_nguoi;
 
-import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import com.uit.backendapi.cau_thu.CauThu;
+import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
 @Entity
+@Table(name = "ThayNguoi", schema = "dbo")
 public class ThayNguoi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,8 @@
 package com.uit.backendapi.cau_thu;
 
 import com.uit.backendapi.ban_thang.BanThang;
-import com.uit.backendapi.api.model.ChiTietDoiHinh;
-import com.uit.backendapi.api.model.DoiHinhRaSan;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
+import com.uit.backendapi.models.*;
 import com.uit.backendapi.thay_nguoi.ThayNguoi;
 import com.uit.backendapi.the_phat.ThePhat;
 import jakarta.persistence.*;
@@ -14,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "CauThu", schema = "dbo")
 public class CauThu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,19 +66,19 @@ public class CauThu {
     private Set<ChiTietDoiHinh> chiTietDoiHinhs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maDoiTruong")
-    private Set<DoiHinhRaSan> doiHinhRaSans_CP = new LinkedHashSet<>();
+    private Set<DoiHinhRaSan> doiHinhRaSans_DoiTruong = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maThuMon")
-    private Set<DoiHinhRaSan> doiHinhRaSans_GK = new LinkedHashSet<>();
+    private Set<DoiHinhRaSan> doiHinhRaSans_ThuMon = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "cauThuXuatSac")
     private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maCauThuVao")
-    private Set<ThayNguoi> thayNguois_cauThuVao = new LinkedHashSet<>();
+    private Set<ThayNguoi> thayNguois_Vao = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maCauThuRa")
-    private Set<ThayNguoi> thayNguois_cauThuRa = new LinkedHashSet<>();
+    private Set<ThayNguoi> thayNguois_Ra = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maCauThu")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();
@@ -195,20 +195,20 @@ public class CauThu {
         this.chiTietDoiHinhs = chiTietDoiHinhs;
     }
 
-    public Set<DoiHinhRaSan> getDoiHinhRaSans_CP() {
-        return doiHinhRaSans_CP;
+    public Set<DoiHinhRaSan> getDoiHinhRaSans_DoiTruong() {
+        return doiHinhRaSans_DoiTruong;
     }
 
-    public void setDoiHinhRaSans_CP(Set<DoiHinhRaSan> doiHinhRaSans_CP) {
-        this.doiHinhRaSans_CP = doiHinhRaSans_CP;
+    public void setDoiHinhRaSans_DoiTruong(Set<DoiHinhRaSan> doiHinhRaSans_DoiTruong) {
+        this.doiHinhRaSans_DoiTruong = doiHinhRaSans_DoiTruong;
     }
 
-    public Set<DoiHinhRaSan> getDoiHinhRaSans_GK() {
-        return doiHinhRaSans_GK;
+    public Set<DoiHinhRaSan> getDoiHinhRaSans_ThuMon() {
+        return doiHinhRaSans_ThuMon;
     }
 
-    public void setDoiHinhRaSans_GK(Set<DoiHinhRaSan> doiHinhRaSans_GK) {
-        this.doiHinhRaSans_GK = doiHinhRaSans_GK;
+    public void setDoiHinhRaSans_ThuMon(Set<DoiHinhRaSan> doiHinhRaSans_ThuMon) {
+        this.doiHinhRaSans_ThuMon = doiHinhRaSans_ThuMon;
     }
 
     public Set<KetQuaThiDau> getKetQuaThiDaus() {
@@ -219,20 +219,20 @@ public class CauThu {
         this.ketQuaThiDaus = ketQuaThiDaus;
     }
 
-    public Set<ThayNguoi> getThayNguois_cauThuVao() {
-        return thayNguois_cauThuVao;
+    public Set<ThayNguoi> getThayNguois_Vao() {
+        return thayNguois_Vao;
     }
 
-    public void setThayNguois_cauThuVao(Set<ThayNguoi> thayNguois_cauThuVao) {
-        this.thayNguois_cauThuVao = thayNguois_cauThuVao;
+    public void setThayNguois_Vao(Set<ThayNguoi> thayNguois_Vao) {
+        this.thayNguois_Vao = thayNguois_Vao;
     }
 
-    public Set<ThayNguoi> getThayNguois_cauThuRa() {
-        return thayNguois_cauThuRa;
+    public Set<ThayNguoi> getThayNguois_Ra() {
+        return thayNguois_Ra;
     }
 
-    public void setThayNguois_cauThuRa(Set<ThayNguoi> thayNguois_cauThuRa) {
-        this.thayNguois_cauThuRa = thayNguois_cauThuRa;
+    public void setThayNguois_Ra(Set<ThayNguoi> thayNguois_Ra) {
+        this.thayNguois_Ra = thayNguois_Ra;
     }
 
     public Set<ThePhat> getThePhats() {
