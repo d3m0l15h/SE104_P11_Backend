@@ -11,7 +11,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "MuaGiai", schema = "dbo")
+@Table(name = "MuaGiai", schema = "dbo", uniqueConstraints = {
+        @UniqueConstraint(name = "UQ_Nam", columnNames = {"Nam"})
+})
 public class MuaGiai {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
