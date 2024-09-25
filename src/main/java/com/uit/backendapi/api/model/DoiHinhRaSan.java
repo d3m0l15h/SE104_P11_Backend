@@ -5,10 +5,14 @@ import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.lich.LichThiDau;
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "DoiHinhRaSan", schema = "dbo")
+@Table(name = "DoiHinhRaSan")
 public class DoiHinhRaSan {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaDoiHinh", nullable = false)
     private Integer id;
 
@@ -30,6 +34,9 @@ public class DoiHinhRaSan {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaThuMon", nullable = false)
     private CauThu maThuMon;
+
+    @OneToMany(mappedBy = "maDoiHinh")
+    private Set<ChiTietDoiHinh> chiTietDoiHinhs = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -77,6 +84,14 @@ public class DoiHinhRaSan {
 
     public void setMaThuMon(CauThu maThuMon) {
         this.maThuMon = maThuMon;
+    }
+
+    public Set<ChiTietDoiHinh> getChiTietDoiHinhs() {
+        return chiTietDoiHinhs;
+    }
+
+    public void setChiTietDoiHinhs(Set<ChiTietDoiHinh> chiTietDoiHinhs) {
+        this.chiTietDoiHinhs = chiTietDoiHinhs;
     }
 
 }

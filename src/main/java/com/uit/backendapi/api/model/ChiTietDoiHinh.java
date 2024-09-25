@@ -6,7 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 @Entity
-@Table(name = "ChiTietDoiHinh", schema = "dbo")
+@Table(name = "ChiTietDoiHinh")
 public class ChiTietDoiHinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class ChiTietDoiHinh {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaDoiHinh", nullable = false)
-    private com.uit.backendapi.api.model.DoiHinhRaSan maDoiHinh;
+    private DoiHinhRaSan maDoiHinh;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaCauThu", nullable = false)
@@ -41,11 +41,11 @@ public class ChiTietDoiHinh {
         this.id = id;
     }
 
-    public com.uit.backendapi.api.model.DoiHinhRaSan getMaDoiHinh() {
+    public DoiHinhRaSan getMaDoiHinh() {
         return maDoiHinh;
     }
 
-    public void setMaDoiHinh(com.uit.backendapi.api.model.DoiHinhRaSan maDoiHinh) {
+    public void setMaDoiHinh(DoiHinhRaSan maDoiHinh) {
         this.maDoiHinh = maDoiHinh;
     }
 
