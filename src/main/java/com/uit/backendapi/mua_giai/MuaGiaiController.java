@@ -37,4 +37,10 @@ public class MuaGiaiController {
     public ResponseEntity<MuaGiai> updateMuaGiai(@PathVariable(value = "id") Long id, @RequestBody MuaGiai muaGiai) {
         return ResponseEntity.ok().body(muaGiaiService.updateMuaGiai(id, muaGiai));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MuaGiai> deleteMuaGiai(@PathVariable(value = "id") Long id) {
+        muaGiaiService.deleteMuaGiai(id);
+        return ResponseEntity.ok().build();
+    }
 }
