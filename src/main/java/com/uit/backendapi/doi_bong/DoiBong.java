@@ -1,10 +1,16 @@
 package com.uit.backendapi.doi_bong;
 
+import com.uit.backendapi.bxh.BangXepHang;
+import com.uit.backendapi.api.model.DoiHinhRaSan;
+import com.uit.backendapi.lich.LichThiDau;
+import com.uit.backendapi.mua_giai.MuaGiai;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "DoiBong", schema = "dbo")
 public class DoiBong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +52,21 @@ public class DoiBong {
     @Nationalized
     @Column(name = "AoDuBi", nullable = false, length = 500)
     private String aoDuBi;
+
+    @OneToMany(mappedBy = "maDoi")
+    private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maDoi")
+    private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maDoiNha")
+    private Set<LichThiDau> lichThiDaus_doiNha = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maDoiKhach")
+    private Set<LichThiDau> lichThiDaus_doiKhach = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "doiVoDich")
+    private Set<MuaGiai> muaGiais = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -125,6 +146,46 @@ public class DoiBong {
 
     public void setAoDuBi(String aoDuBi) {
         this.aoDuBi = aoDuBi;
+    }
+
+    public Set<BangXepHang> getBangXepHangs() {
+        return bangXepHangs;
+    }
+
+    public void setBangXepHangs(Set<BangXepHang> bangXepHangs) {
+        this.bangXepHangs = bangXepHangs;
+    }
+
+    public Set<DoiHinhRaSan> getDoiHinhRaSans() {
+        return doiHinhRaSans;
+    }
+
+    public void setDoiHinhRaSans(Set<DoiHinhRaSan> doiHinhRaSans) {
+        this.doiHinhRaSans = doiHinhRaSans;
+    }
+
+    public Set<LichThiDau> getLichThiDaus_doiNha() {
+        return lichThiDaus_doiNha;
+    }
+
+    public void setLichThiDaus_doiNha(Set<LichThiDau> lichThiDaus_doiNha) {
+        this.lichThiDaus_doiNha = lichThiDaus_doiNha;
+    }
+
+    public Set<LichThiDau> getLichThiDaus_doiKhach() {
+        return lichThiDaus_doiKhach;
+    }
+
+    public void setLichThiDaus_doiKhach(Set<LichThiDau> lichThiDaus_doiKhach) {
+        this.lichThiDaus_doiKhach = lichThiDaus_doiKhach;
+    }
+
+    public Set<MuaGiai> getMuaGiais() {
+        return muaGiais;
+    }
+
+    public void setMuaGiais(Set<MuaGiai> muaGiais) {
+        this.muaGiais = muaGiais;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.uit.backendapi.api.model;
+package com.uit.backendapi.bxh;
 
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.mua_giai.MuaGiai;
@@ -8,7 +8,6 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "BangXepHang", schema = "dbo")
 public class BangXepHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

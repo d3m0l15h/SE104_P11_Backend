@@ -1,16 +1,17 @@
-package com.uit.backendapi.api.model;
+package com.uit.backendapi.ban_thang;
 
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
+import java.time.LocalTime;
+
 @Entity
-@Table(name = "ThayNguoi", schema = "dbo")
-public class ThayNguoi {
+public class BanThang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MaThayNguoi", nullable = false)
+    @Column(name = "MaBanThang", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -18,16 +19,15 @@ public class ThayNguoi {
     private KetQuaThiDau maKetQua;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "MaCauThuVao", nullable = false)
-    private CauThu maCauThuVao;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "MaCauThuRa", nullable = false)
-    private CauThu maCauThuRa;
+    @JoinColumn(name = "MaCauThu", nullable = false)
+    private CauThu maCauThu;
 
     @Nationalized
-    @Column(name = "ThoiDiem", nullable = false, length = 100)
-    private String thoiDiem;
+    @Column(name = "LoaiBanThang", nullable = false, length = 50)
+    private String loaiBanThang;
+
+    @Column(name = "ThoiDiem", nullable = false)
+    private LocalTime thoiDiem;
 
     public Integer getId() {
         return id;
@@ -45,27 +45,27 @@ public class ThayNguoi {
         this.maKetQua = maKetQua;
     }
 
-    public CauThu getMaCauThuVao() {
-        return maCauThuVao;
+    public CauThu getMaCauThu() {
+        return maCauThu;
     }
 
-    public void setMaCauThuVao(CauThu maCauThuVao) {
-        this.maCauThuVao = maCauThuVao;
+    public void setMaCauThu(CauThu maCauThu) {
+        this.maCauThu = maCauThu;
     }
 
-    public CauThu getMaCauThuRa() {
-        return maCauThuRa;
+    public String getLoaiBanThang() {
+        return loaiBanThang;
     }
 
-    public void setMaCauThuRa(CauThu maCauThuRa) {
-        this.maCauThuRa = maCauThuRa;
+    public void setLoaiBanThang(String loaiBanThang) {
+        this.loaiBanThang = loaiBanThang;
     }
 
-    public String getThoiDiem() {
+    public LocalTime getThoiDiem() {
         return thoiDiem;
     }
 
-    public void setThoiDiem(String thoiDiem) {
+    public void setThoiDiem(LocalTime thoiDiem) {
         this.thoiDiem = thoiDiem;
     }
 

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
 @Entity
-@Table(name = "QuiDinh", schema = "dbo")
+@Table(name = "QuiDinh")
 public class QuiDinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
