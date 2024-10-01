@@ -6,12 +6,16 @@ import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.thay_nguoi.ThayNguoi;
 import com.uit.backendapi.the_phat.ThePhat;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "KetQuaThiDau", schema = "dbo")
 public class KetQuaThiDau {
@@ -48,77 +52,5 @@ public class KetQuaThiDau {
 
     @OneToMany(mappedBy = "maKetQua")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public LichThiDau getMaLichThiDau() {
-        return maLichThiDau;
-    }
-
-    public void setMaLichThiDau(LichThiDau maLichThiDau) {
-        this.maLichThiDau = maLichThiDau;
-    }
-
-    public Integer getSoBanDoiNha() {
-        return soBanDoiNha;
-    }
-
-    public void setSoBanDoiNha(Integer soBanDoiNha) {
-        this.soBanDoiNha = soBanDoiNha;
-    }
-
-    public CauThu getCauThuXuatSac() {
-        return cauThuXuatSac;
-    }
-
-    public void setCauThuXuatSac(CauThu cauThuXuatSac) {
-        this.cauThuXuatSac = cauThuXuatSac;
-    }
-
-    public String getGhiChu() {
-        return ghiChu;
-    }
-
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
-    }
-
-    public Integer getSoBanDoiKhach() {
-        return soBanDoiKhach;
-    }
-
-    public void setSoBanDoiKhach(Integer soBanDoiKhach) {
-        this.soBanDoiKhach = soBanDoiKhach;
-    }
-
-    public Set<BanThang> getBanThangs() {
-        return banThangs;
-    }
-
-    public void setBanThangs(Set<BanThang> banThangs) {
-        this.banThangs = banThangs;
-    }
-
-    public Set<ThayNguoi> getThayNguois() {
-        return thayNguois;
-    }
-
-    public void setThayNguois(Set<ThayNguoi> thayNguois) {
-        this.thayNguois = thayNguois;
-    }
-
-    public Set<ThePhat> getThePhats() {
-        return thePhats;
-    }
-
-    public void setThePhats(Set<ThePhat> thePhats) {
-        this.thePhats = thePhats;
-    }
 
 }

@@ -3,10 +3,14 @@ package com.uit.backendapi.bxh;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "BangXepHang", schema = "dbo")
 public class BangXepHang {
@@ -50,93 +54,5 @@ public class BangXepHang {
     @ColumnDefault("0")
     @Column(name = "SoBanThua")
     private Integer soBanThua;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public LocalDate getNgayXepHang() {
-        return ngayXepHang;
-    }
-
-    public void setNgayXepHang(LocalDate ngayXepHang) {
-        this.ngayXepHang = ngayXepHang;
-    }
-
-    public DoiBong getMaDoi() {
-        return maDoi;
-    }
-
-    public void setMaDoi(DoiBong maDoi) {
-        this.maDoi = maDoi;
-    }
-
-    public Integer getSoTranThang() {
-        return soTranThang;
-    }
-
-    public void setSoTranThang(Integer soTranThang) {
-        this.soTranThang = soTranThang;
-    }
-
-    public Integer getSoTranHoa() {
-        return soTranHoa;
-    }
-
-    public void setSoTranHoa(Integer soTranHoa) {
-        this.soTranHoa = soTranHoa;
-    }
-
-    public Integer getSoTranThua() {
-        return soTranThua;
-    }
-
-    public void setSoTranThua(Integer soTranThua) {
-        this.soTranThua = soTranThua;
-    }
-
-    public Integer getHieuSo() {
-        return hieuSo;
-    }
-
-    public void setHieuSo(Integer hieuSo) {
-        this.hieuSo = hieuSo;
-    }
-
-    public MuaGiai getMaMuaGiai() {
-        return maMuaGiai;
-    }
-
-    public void setMaMuaGiai(MuaGiai maMuaGiai) {
-        this.maMuaGiai = maMuaGiai;
-    }
-
-    public Integer getDiem() {
-        return diem;
-    }
-
-    public void setDiem(Integer diem) {
-        this.diem = diem;
-    }
-
-    public Integer getSoBanThang() {
-        return soBanThang;
-    }
-
-    public void setSoBanThang(Integer soBanThang) {
-        this.soBanThang = soBanThang;
-    }
-
-    public Integer getSoBanThua() {
-        return soBanThua;
-    }
-
-    public void setSoBanThua(Integer soBanThua) {
-        this.soBanThua = soBanThua;
-    }
 
 }
