@@ -5,6 +5,7 @@ import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.lich.LichThiDau;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "MuaGiai", schema = "dbo", uniqueConstraints = {
         @UniqueConstraint(name = "UQ_Nam", columnNames = {"Nam"})
@@ -39,4 +41,8 @@ public class MuaGiai {
     @OneToMany(mappedBy = "maMuaGiai")
     private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
 
+    public MuaGiai(String nam, DoiBong doiVoDich) {
+        this.nam = nam;
+        this.doiVoDich = doiVoDich;
+    }
 }
