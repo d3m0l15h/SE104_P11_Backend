@@ -41,8 +41,7 @@ public class MuaGiai {
     @OneToMany(mappedBy = "maMuaGiai")
     private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
 
-    public MuaGiai(String nam, DoiBong doiVoDich) {
+    public MuaGiai(String nam) {
         this.nam = nam;
-        this.doiVoDich = doiVoDich;
     }
 }

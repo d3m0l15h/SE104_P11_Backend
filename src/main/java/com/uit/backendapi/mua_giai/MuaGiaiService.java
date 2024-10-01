@@ -30,13 +30,17 @@ public class MuaGiaiService implements IMuaGiaiService {
 
     @Override
     public MuaGiai createMuaGiai(CreateMuaGiaiDto createMuaGiaiDto) {
-        DoiBong doiVoDich = doiBongRepository.findById(createMuaGiaiDto.getDoiVoDich()).orElseThrow(
-                () -> new RuntimeException("Doi bong not found with id: " + createMuaGiaiDto.getDoiVoDich())
+        MuaGiai muaGiai = new MuaGiai(
+                createMuaGiaiDto.getNam()
         );
 
-        MuaGiai muaGiai = new MuaGiai(
-                createMuaGiaiDto.getNam(),
-                doiVoDich
+        createMuaGiaiDto.getDoiVoDich().ifPresent(
+                doiVoDichId -> {
+                    DoiBong doiVoDich = doiBongRepository.findById(doiVoDichId).orElseThrow(
+                            () -> new RuntimeException("Doi bong not found with id: " + doiVoDichId)
+                    );
+                    muaGiai.setDoiVoDich(doiVoDich);
+                }
         );
 
         return muaGiaiRepository.save(muaGiai);
@@ -50,13 +54,16 @@ public class MuaGiaiService implements IMuaGiaiService {
                 .orElseThrow(() -> new RuntimeException("Mua giai not found with id: " + id));
     }
 
-    private MuaGiai updateExistingMuaGiai(MuaGiai existingMuaGiai, UpdateMuaGiaiDto muaGiaiDto) {
-        existingMuaGiai.setNam(muaGiaiDto.getNam());
+    private MuaGiai updateExistingMuaGiai(MuaGiai existingMuaGiai, UpdateMuaGiaiDto updateMuaGiaiDto) {
+        existingMuaGiai.setNam(updateMuaGiaiDto.getNam());
 
-        DoiBong doiVoDich = doiBongRepository.findById(muaGiaiDto.getDoiVoDich()).orElseThrow(
-                () -> new RuntimeException("Doi bong not found with id: " + muaGiaiDto.getDoiVoDich())
-        );
-        existingMuaGiai.setDoiVoDich(doiVoDich);
+        updateMuaGiaiDto.getDoiVoDich().ifPresent(doiVoDichId -> {
+            DoiBong doiVoDich = doiBongRepository.findById(doiVoDichId).orElseThrow(
+                    () -> new RuntimeException("Doi bong not found with id: " + doiVoDichId)
+            );
+            existingMuaGiai.setDoiVoDich(doiVoDich);
+        });
+
         return existingMuaGiai;
     }
 
