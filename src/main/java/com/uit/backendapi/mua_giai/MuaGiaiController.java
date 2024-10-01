@@ -22,7 +22,7 @@ public class MuaGiaiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MuaGiai> getMuaGiaiById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<MuaGiai> getMuaGiaiById(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(muaGiaiService.getMuaGiaiById(id));
     }
 
@@ -32,12 +32,12 @@ public class MuaGiaiController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MuaGiai> updateMuaGiai(@PathVariable(value = "id") Long id, @RequestBody UpdateMuaGiaiDto updateMuaGiaiDto) {
+    public ResponseEntity<MuaGiai> updateMuaGiai(@PathVariable("id") Long id, @RequestBody UpdateMuaGiaiDto updateMuaGiaiDto) {
         return ResponseEntity.ok().body(muaGiaiService.updateMuaGiai(id, updateMuaGiaiDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MuaGiai> deleteMuaGiai(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<MuaGiai> deleteMuaGiai(@PathVariable("id") Long id) {
         muaGiaiService.deleteMuaGiai(id);
         return ResponseEntity.ok().build();
     }
