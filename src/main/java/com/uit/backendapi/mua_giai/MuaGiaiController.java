@@ -1,22 +1,20 @@
 package com.uit.backendapi.mua_giai;
 
 
+import com.uit.backendapi.mua_giai.dto.CreateMuaGiaiDto;
+import com.uit.backendapi.mua_giai.dto.UpdateMuaGiaiDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/mua-giai")
 public class MuaGiaiController {
-
     private final MuaGiaiService muaGiaiService;
-
-    @Autowired
-    public MuaGiaiController(MuaGiaiService muaGiaiService) {
-        this.muaGiaiService = muaGiaiService;
-    }
 
     @GetMapping
     public List<MuaGiai> getAllMuaGiai() {
@@ -29,13 +27,13 @@ public class MuaGiaiController {
     }
 
     @PostMapping
-    public MuaGiai createMuaGiai(@RequestBody MuaGiai muaGiai) {
-        return muaGiaiService.createMuaGiai(muaGiai);
+    public MuaGiai createMuaGiai(@RequestBody CreateMuaGiaiDto createMuaGiaiDto) {
+        return muaGiaiService.createMuaGiai(createMuaGiaiDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MuaGiai> updateMuaGiai(@PathVariable(value = "id") Long id, @RequestBody MuaGiai muaGiai) {
-        return ResponseEntity.ok().body(muaGiaiService.updateMuaGiai(id, muaGiai));
+    public ResponseEntity<MuaGiai> updateMuaGiai(@PathVariable(value = "id") Long id, @RequestBody UpdateMuaGiaiDto updateMuaGiaiDto) {
+        return ResponseEntity.ok().body(muaGiaiService.updateMuaGiai(id, updateMuaGiaiDto));
     }
 
     @DeleteMapping("/{id}")
