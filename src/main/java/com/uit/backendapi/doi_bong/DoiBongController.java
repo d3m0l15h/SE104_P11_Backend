@@ -1,11 +1,13 @@
 package com.uit.backendapi.doi_bong;
 
+import com.uit.backendapi.doi_bong.dto.CreateDoiBongDto;
+import com.uit.backendapi.doi_bong.dto.UpdateDoiBongDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/doi-bong")
@@ -19,18 +21,29 @@ public class DoiBongController {
         }
 
         @GetMapping
-        public List<DoiBong> getAllDoiBong() {
-            return doiBongService.getAllDoiBong();
+        public ResponseEntity<List<DoiBong>> getAllDoiBong() {
+            return ResponseEntity.ok(doiBongService.getAllDoiBong());
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<DoiBong> getDoiBongById(@PathVariable Long id) {
-            Optional<DoiBong> doiBong = doiBongService.getDoiBongById(id);
-            return doiBong.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        public ResponseEntity<DoiBong> getDoiBongById(@PathVariable("id") Long id) {
+            DoiBong doiBong = doiBongService.getDoiBongById(id);
+            return ResponseEntity.ok(doiBong);
         }
 
         @PostMapping
-        public ResponseEntity<DoiBong> createDoiBong(@RequestBody DoiBong doiBong) {
-            return ResponseEntity.ok(doiBongService.createDoiBong(doiBong));
+        public ResponseEntity<DoiBong> createDoiBong(@ModelAttribute CreateDoiBongDto createDoiBongDto) throws IOException {
+            return ResponseEntity.ok(doiBongService.createDoiBong(createDoiBongDto));
+        }
+
+        @PutMapping("/{id}")
+        public ResponseEntity<DoiBong> updateDoiBong(@PathVariable("id") Long id, @ModelAttribute UpdateDoiBongDto updateDoiBongDto) throws IOException {
+            return ResponseEntity.ok(doiBongService.updateDoiBong(id, updateDoiBongDto));
+        }
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deleteDoiBong(@PathVariable Long id) {
+            doiBongService.deleteDoiBong(id);
+            return ResponseEntity.noContent().build();
         }
 }

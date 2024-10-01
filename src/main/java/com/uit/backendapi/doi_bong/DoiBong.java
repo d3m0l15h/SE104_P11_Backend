@@ -6,6 +6,7 @@ import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "DoiBong", schema = "dbo")
 public class DoiBong {
@@ -73,4 +75,15 @@ public class DoiBong {
     @OneToMany(mappedBy = "doiVoDich")
     private Set<MuaGiai> muaGiais = new LinkedHashSet<>();
 
+    public DoiBong(String tenDoi, String tenSanNha, String diaChiSanNha, String dienThoai, String email, String toChucQuanLy, String thanhPhoTrucThuoc, String aoChinhThuc, String aoDuBi) {
+        this.tenDoi = tenDoi;
+        this.tenSanNha = tenSanNha;
+        this.diaChiSanNha = diaChiSanNha;
+        this.dienThoai = dienThoai;
+        this.email = email;
+        this.toChucQuanLy = toChucQuanLy;
+        this.thanhPhoTrucThuoc = thanhPhoTrucThuoc;
+        this.aoChinhThuc = aoChinhThuc;
+        this.aoDuBi = aoDuBi;
+    }
 }
