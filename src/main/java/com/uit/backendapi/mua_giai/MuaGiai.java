@@ -1,5 +1,6 @@
 package com.uit.backendapi.mua_giai;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uit.backendapi.bxh.BangXepHang;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.lich.LichThiDau;
