@@ -33,6 +33,9 @@ public class DoiBongController {
 
         @PostMapping
         public ResponseEntity<DoiBong> createDoiBong(@ModelAttribute CreateDoiBongDto createDoiBongDto) throws IOException {
+            if(createDoiBongDto.getAoChinhThuc() == null || createDoiBongDto.getAoDuBi() == null) {
+                return ResponseEntity.badRequest().build();
+            }
             return ResponseEntity.ok(doiBongService.createDoiBong(createDoiBongDto));
         }
 
