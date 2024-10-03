@@ -1,5 +1,7 @@
 package com.uit.backendapi.doi_bong;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uit.backendapi.bxh.BangXepHang;
 import com.uit.backendapi.models.DoiHinhRaSan;
 import com.uit.backendapi.lich.LichThiDau;
@@ -66,14 +68,8 @@ public class DoiBong {
     @OneToMany(mappedBy = "maDoi")
     private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "maDoiNha")
-    private Set<LichThiDau> lichThiDaus_DoiNha = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "maDoiKhach")
-    private Set<LichThiDau> lichThiDaus_DoiKhach = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "doiVoDich")
-    private Set<MuaGiai> muaGiais = new LinkedHashSet<>();
+    private Set<MuaGiai> muaGiaiVoDichs = new LinkedHashSet<>();
 
     public DoiBong(String tenDoi, String tenSanNha, String diaChiSanNha, String dienThoai, String email, String toChucQuanLy, String thanhPhoTrucThuoc, String aoChinhThuc, String aoDuBi) {
         this.tenDoi = tenDoi;
