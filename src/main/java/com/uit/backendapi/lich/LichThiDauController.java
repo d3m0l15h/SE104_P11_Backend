@@ -2,66 +2,63 @@ package com.uit.backendapi.lich;
 
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/lich-thi-dau")
 public class LichThiDauController {
     private final LichThiDauService lichThiDauService;
 
-    @Autowired
-    public LichThiDauController(LichThiDauService lichThiDauService) {
-        this.lichThiDauService = lichThiDauService;
-    }
-
     @GetMapping
-    public List<LichThiDau> getAllLichThiDau() {
-        return lichThiDauService.getAllLichThiDau();
+    public ResponseEntity<List<LichThiDau>> getAllLichThiDau() {
+        return ResponseEntity.ok(lichThiDauService.getAllLichThiDau());
     }
 
     @GetMapping("/{id}")
-    public LichThiDau getLichThiDauById(@PathVariable("id") Long id) {
-        return lichThiDauService.getLichThiDauById(id);
+    public ResponseEntity<LichThiDau> getLichThiDauById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauById(id));
     }
 
     @GetMapping("/doi-bong/{maDoiBong}")
-    public List<LichThiDau> getLichThiDauByDoiBong(@PathVariable("maDoiBong") Long maDoiBong,
+    public ResponseEntity<List<LichThiDau>> getLichThiDauByDoiBong(@PathVariable("maDoiBong") Long maDoiBong,
                                                    @RequestParam(required = false) Long maMuaGiai) {
-        return lichThiDauService.getLichThiDauByDoiBongOrMuaGiai(maDoiBong, maMuaGiai);
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByDoiBongOrMuaGiai(maDoiBong, maMuaGiai));
     }
 
     @GetMapping("/vong-thi-dau/{vongThiDau}/mua-giai/{maMuaGiai}")
-    public List<LichThiDau> getLichThiDauByVongThiDau(@PathVariable("vongThiDau") String vongThiDau,
+    public ResponseEntity<List<LichThiDau>> getLichThiDauByVongThiDau(@PathVariable("vongThiDau") String vongThiDau,
                                                       @PathVariable("maMuaGiai") Long maMuaGiai) {
-        return lichThiDauService.getLichThiDauByVongThiDauAndMaMuaGiai(vongThiDau, maMuaGiai);
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByVongThiDauAndMaMuaGiai(vongThiDau, maMuaGiai));
     }
 
     @GetMapping("/mua-giai/{muaGiai}")
-    public List<LichThiDau> getLichThiDauByMaMuaGiai(@PathVariable String muaGiai) {
-        return lichThiDauService.getLichThiDauByMaMuaGiai(muaGiai);
+    public ResponseEntity<List<LichThiDau>> getLichThiDauByMaMuaGiai(@PathVariable String muaGiai) {
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByMaMuaGiai(muaGiai));
     }
 
     @GetMapping("/ngay-thi-dau")
-    public List<LichThiDau> getLichThiDauByNgayThiDau(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDauStart,
+    public ResponseEntity<List<LichThiDau>> getLichThiDauByNgayThiDau(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDauStart,
                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDauEnd) {
-        return lichThiDauService.getLichThiDauByNgayThiDau(ngayThiDauStart, ngayThiDauEnd);
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDau(ngayThiDauStart, ngayThiDauEnd));
     }
 
     @GetMapping("/ngay-gio-thi-dau")
-    public List<LichThiDau> getLichThiDauByNgayThiDauAndGioThiDau(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDau,
+    public ResponseEntity
+            <List<LichThiDau>> getLichThiDauByNgayThiDauAndGioThiDau(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDau,
                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime gioThiDau) {
-        return lichThiDauService.getLichThiDauByNgayThiDauAndGioThiDau(ngayThiDau, gioThiDau);
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDauAndGioThiDau(ngayThiDau, gioThiDau));
     }
 
     @PostMapping
-    public LichThiDau createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto) {
+    public ResponseEntity<LichThiDau> createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto) {
         if(createLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
             throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
         }
@@ -74,11 +71,11 @@ public class LichThiDauController {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 
-        return lichThiDauService.createLichThiDau(createLichThiDauDto);
+        return ResponseEntity.ok(lichThiDauService.createLichThiDau(createLichThiDauDto));
     }
 
     @PutMapping("/{id}")
-    public LichThiDau updateLichThiDau(@PathVariable("id") Long id, @RequestBody UpdateLichThiDauDto updateLichThiDauDto) {
+    public ResponseEntity<LichThiDau> updateLichThiDau(@PathVariable("id") Long id, @RequestBody UpdateLichThiDauDto updateLichThiDauDto) {
         if(updateLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
             throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
         }
@@ -91,11 +88,12 @@ public class LichThiDauController {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 
-        return lichThiDauService.updateLichThiDau(id, updateLichThiDauDto);
+        return ResponseEntity.ok(lichThiDauService.updateLichThiDau(id, updateLichThiDauDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteLichThiDau(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteLichThiDau(@PathVariable("id") Long id) {
         lichThiDauService.deleteLichThiDau(id);
+        return ResponseEntity.noContent().build();
     }
 }
