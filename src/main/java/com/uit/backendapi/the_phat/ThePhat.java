@@ -3,8 +3,14 @@ package com.uit.backendapi.the_phat;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "ThePhat", schema = "dbo")
 public class ThePhat {
@@ -23,50 +29,16 @@ public class ThePhat {
 
     @Nationalized
     @Column(name = "ThoiDiem", nullable = false, length = 100)
-    private String thoiDiem;
+    private Integer thoiDiem;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaKetQua", nullable = false)
     private KetQuaThiDau maKetQua;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public CauThu getMaCauThu() {
-        return maCauThu;
-    }
-
-    public void setMaCauThu(CauThu maCauThu) {
+    public ThePhat(CauThu maCauThu, String loaiThe, Integer thoiDiem, KetQuaThiDau maKetQua) {
         this.maCauThu = maCauThu;
-    }
-
-    public String getLoaiThe() {
-        return loaiThe;
-    }
-
-    public void setLoaiThe(String loaiThe) {
         this.loaiThe = loaiThe;
-    }
-
-    public String getThoiDiem() {
-        return thoiDiem;
-    }
-
-    public void setThoiDiem(String thoiDiem) {
         this.thoiDiem = thoiDiem;
-    }
-
-    public KetQuaThiDau getMaKetQua() {
-        return maKetQua;
-    }
-
-    public void setMaKetQua(KetQuaThiDau maKetQua) {
         this.maKetQua = maKetQua;
     }
-
 }
