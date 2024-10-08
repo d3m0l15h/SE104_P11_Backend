@@ -7,6 +7,7 @@ import com.uit.backendapi.thay_nguoi.ThayNguoi;
 import com.uit.backendapi.the_phat.ThePhat;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "KetQuaThiDau", schema = "dbo")
 public class KetQuaThiDau {
@@ -52,5 +54,13 @@ public class KetQuaThiDau {
 
     @OneToMany(mappedBy = "maKetQua")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();
+
+    public KetQuaThiDau( LichThiDau maLichThiDau, Integer soBanDoiNha, CauThu cauThuXuatSac, String ghiChu, Integer soBanDoiKhach) {
+        this.maLichThiDau = maLichThiDau;
+        this.soBanDoiNha = soBanDoiNha;
+        this.cauThuXuatSac = cauThuXuatSac;
+        this.ghiChu = ghiChu;
+        this.soBanDoiKhach = soBanDoiKhach;
+    }
 
 }
