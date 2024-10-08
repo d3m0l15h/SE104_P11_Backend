@@ -4,6 +4,7 @@ import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
@@ -11,6 +12,7 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "BanThang", schema = "dbo")
 public class BanThang {
@@ -32,6 +34,12 @@ public class BanThang {
     private String loaiBanThang;
 
     @Column(name = "ThoiDiem", nullable = false)
-    private LocalTime thoiDiem;
+    private Integer thoiDiem;
 
+    public BanThang(KetQuaThiDau maKetQua, CauThu maCauThu, String loaiBanThang, Integer thoiDiem) {
+        this.maKetQua = maKetQua;
+        this.maCauThu = maCauThu;
+        this.loaiBanThang = loaiBanThang;
+        this.thoiDiem = thoiDiem;
+    }
 }
