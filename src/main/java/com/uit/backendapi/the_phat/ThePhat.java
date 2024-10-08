@@ -27,8 +27,7 @@ public class ThePhat {
     @Column(name = "LoaiThe", nullable = false, length = 100)
     private String loaiThe;
 
-    @Nationalized
-    @Column(name = "ThoiDiem", nullable = false, length = 100)
+    @Column(name = "ThoiDiem", nullable = false)
     private Integer thoiDiem;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
