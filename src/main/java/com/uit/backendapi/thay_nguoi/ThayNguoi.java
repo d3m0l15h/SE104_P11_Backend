@@ -3,8 +3,14 @@ package com.uit.backendapi.thay_nguoi;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "ThayNguoi", schema = "dbo")
 public class ThayNguoi {
@@ -25,48 +31,13 @@ public class ThayNguoi {
     @JoinColumn(name = "MaCauThuRa", nullable = false)
     private CauThu maCauThuRa;
 
-    @Nationalized
-    @Column(name = "ThoiDiem", nullable = false, length = 100)
-    private String thoiDiem;
+    @Column(name = "ThoiDiem", nullable = false)
+    private Integer thoiDiem;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public KetQuaThiDau getMaKetQua() {
-        return maKetQua;
-    }
-
-    public void setMaKetQua(KetQuaThiDau maKetQua) {
+    public ThayNguoi(KetQuaThiDau maKetQua, CauThu maCauThuVao, CauThu maCauThuRa, Integer thoiDiem) {
         this.maKetQua = maKetQua;
-    }
-
-    public CauThu getMaCauThuVao() {
-        return maCauThuVao;
-    }
-
-    public void setMaCauThuVao(CauThu maCauThuVao) {
         this.maCauThuVao = maCauThuVao;
-    }
-
-    public CauThu getMaCauThuRa() {
-        return maCauThuRa;
-    }
-
-    public void setMaCauThuRa(CauThu maCauThuRa) {
         this.maCauThuRa = maCauThuRa;
-    }
-
-    public String getThoiDiem() {
-        return thoiDiem;
-    }
-
-    public void setThoiDiem(String thoiDiem) {
         this.thoiDiem = thoiDiem;
     }
-
 }
