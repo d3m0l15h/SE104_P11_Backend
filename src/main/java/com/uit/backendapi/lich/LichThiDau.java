@@ -1,7 +1,6 @@
 package com.uit.backendapi.lich;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import com.uit.backendapi.models.DoiHinhRaSan;
@@ -21,6 +20,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "LichThiDau", schema = "dbo")
 public class LichThiDau {
     @Id
@@ -44,17 +44,14 @@ public class LichThiDau {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaDoiNha", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private DoiBong maDoiNha;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaDoiKhach", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private DoiBong maDoiKhach;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaMuaGiai", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "lichThiDaus"})
     private MuaGiai maMuaGiai;
 
     @OneToMany(mappedBy = "maLichThiDau")

@@ -65,8 +65,8 @@ public class DoiBong {
     @OneToMany(mappedBy = "maDoi")
     private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "maDoi")
-    private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "maDoi")
+//    private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "doiVoDich")
     private Set<MuaGiai> muaGiaiVoDichs = new LinkedHashSet<>();

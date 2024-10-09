@@ -1,6 +1,9 @@
 package com.uit.backendapi.mua_giai;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uit.backendapi.bxh.BangXepHang;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.lich.LichThiDau;
@@ -18,6 +21,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "MuaGiai", schema = "dbo", uniqueConstraints = {
         @UniqueConstraint(name = "UQ_Nam", columnNames = {"Nam"})
 })
@@ -39,8 +43,8 @@ public class MuaGiai {
     @OneToMany(mappedBy = "maMuaGiai")
     private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "maMuaGiai")
-    private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "maMuaGiai")
+//    private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
 
     public MuaGiai(String nam) {
         this.nam = nam;
