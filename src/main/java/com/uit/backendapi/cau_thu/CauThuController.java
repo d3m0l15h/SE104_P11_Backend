@@ -1,5 +1,6 @@
 package com.uit.backendapi.cau_thu;
 
+import com.uit.backendapi.cau_thu.dto.CauThuDto;
 import com.uit.backendapi.cau_thu.dto.CreateCauThuDto;
 import com.uit.backendapi.cau_thu.dto.UpdateCauThuDto;
 import lombok.RequiredArgsConstructor;
@@ -15,22 +16,22 @@ public class CauThuController {
     private final CauThuService cauThuService;
 
     @GetMapping
-    public ResponseEntity<List<CauThu>> getAllCauThu() {
+    public ResponseEntity<List<CauThuDto>> getAllCauThu() {
         return ResponseEntity.ok(cauThuService.getAllCauThu());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CauThu> getCauThuById(@PathVariable("id") Long id) {
+    public ResponseEntity<CauThuDto> getCauThuById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cauThuService.getCauThuById(id));
     }
 
     @PostMapping
-    public ResponseEntity<CauThu> createCauThu(@RequestBody CreateCauThuDto createCauThuDto) {
+    public ResponseEntity<CauThuDto> createCauThu(@RequestBody CreateCauThuDto createCauThuDto) {
         return ResponseEntity.ok(cauThuService.createCauThu(createCauThuDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CauThu> updateCauThu(@PathVariable("id") Long id, @RequestBody UpdateCauThuDto updateCauThuDto) {
+    public ResponseEntity<CauThuDto> updateCauThu(@PathVariable("id") Long id, @RequestBody UpdateCauThuDto updateCauThuDto) {
         return ResponseEntity.ok(cauThuService.updateCauThu(id, updateCauThuDto));
     }
 

@@ -1,5 +1,6 @@
 package com.uit.backendapi.cau_thu;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uit.backendapi.ban_thang.BanThang;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "CauThu", schema = "dbo")
 public class CauThu {
     @Id
