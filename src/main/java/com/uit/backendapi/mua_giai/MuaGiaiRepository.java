@@ -2,8 +2,8 @@ package com.uit.backendapi.mua_giai;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface MuaGiaiRepository extends JpaRepository<MuaGiai, Long> {
-    MuaGiai findByNamContaining(String nam);
+    Optional<MuaGiai> findByNamOrId(String nam, Integer id);
 }
