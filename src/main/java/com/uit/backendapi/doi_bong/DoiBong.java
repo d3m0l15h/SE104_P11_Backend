@@ -1,6 +1,7 @@
 package com.uit.backendapi.doi_bong;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uit.backendapi.bxh.BangXepHang;
 import com.uit.backendapi.models.DoiHinhRaSan;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "DoiBong", schema = "dbo")
 public class DoiBong {
     @Id

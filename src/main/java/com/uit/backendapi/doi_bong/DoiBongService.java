@@ -81,7 +81,7 @@ public class DoiBongService implements IDoiBongService {
 
     private DoiBong updateExistingDoiBong(DoiBong existingDoiBong, UpdateDoiBongDto updateDoiBongDto) throws IOException {
 
-        BeanUtils.copyProperties(updateDoiBongDto, existingDoiBong, "id", "aoChinhThuc", "aoDuBi");
+        Utils.copyNonNullProperties(updateDoiBongDto, existingDoiBong, "id", "aoChinhThuc", "aoDuBi");
 
         String folder = "doi-bong/" + existingDoiBong.getId();
 
