@@ -1,6 +1,7 @@
 package com.uit.backendapi.lich;
 
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
+import com.uit.backendapi.lich.dto.LichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,47 +19,32 @@ public class LichThiDauController {
     private final LichThiDauService lichThiDauService;
 
     @GetMapping
-    public ResponseEntity<List<LichThiDau>> getAllLichThiDau() {
+    public ResponseEntity<List<LichThiDauDto>> getAllLichThiDau() {
         return ResponseEntity.ok(lichThiDauService.getAllLichThiDau());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LichThiDau> getLichThiDauById(@PathVariable("id") Long id) {
+    public ResponseEntity<LichThiDauDto> getLichThiDauById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(lichThiDauService.getLichThiDauById(id));
     }
 
-    @GetMapping("/doi-bong/{maDoiBong}")
-    public ResponseEntity<List<LichThiDau>> getLichThiDauByDoiBong(@PathVariable("maDoiBong") Long maDoiBong,
-                                                   @RequestParam(required = false) Long maMuaGiai) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByDoiBongOrMuaGiai(maDoiBong, maMuaGiai));
-    }
-
-    @GetMapping("/vong-thi-dau/{vongThiDau}/mua-giai/{maMuaGiai}")
-    public ResponseEntity<List<LichThiDau>> getLichThiDauByVongThiDau(@PathVariable("vongThiDau") String vongThiDau,
-                                                      @PathVariable("maMuaGiai") Long maMuaGiai) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByVongThiDauAndMaMuaGiai(vongThiDau, maMuaGiai));
-    }
-
-    @GetMapping("/mua-giai/{muaGiai}")
-    public ResponseEntity<List<LichThiDau>> getLichThiDauByMaMuaGiai(@PathVariable String muaGiai) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByMaMuaGiai(muaGiai));
+    @GetMapping("/mua-giai/{nam}")
+    public ResponseEntity<List<LichThiDauDto>> getLichThiDauByMuaGiai(
+            @PathVariable("nam") String nam,
+            @RequestParam(name = "vong-thi-dau", required = false) String vongThiDau,
+            @RequestParam(name = "ma-doi-bong", required = false) Long maDoiBong) {
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByMuaGiai(nam, vongThiDau, maDoiBong));
     }
 
     @GetMapping("/ngay-thi-dau")
-    public ResponseEntity<List<LichThiDau>> getLichThiDauByNgayThiDau(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDauStart,
-                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDauEnd) {
+    public ResponseEntity<List<LichThiDauDto>> getLichThiDauByNgayThiDau(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayThiDauStart,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayThiDauEnd) {
         return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDau(ngayThiDauStart, ngayThiDauEnd));
     }
 
-    @GetMapping("/ngay-gio-thi-dau")
-    public ResponseEntity
-            <List<LichThiDau>> getLichThiDauByNgayThiDauAndGioThiDau(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate ngayThiDau,
-                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime gioThiDau) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDauAndGioThiDau(ngayThiDau, gioThiDau));
-    }
-
     @PostMapping
-    public ResponseEntity<LichThiDau> createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto) {
+    public ResponseEntity<LichThiDauDto> createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto) {
         if(createLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
             throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
         }
@@ -75,16 +61,16 @@ public class LichThiDauController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LichThiDau> updateLichThiDau(@PathVariable("id") Long id, @RequestBody UpdateLichThiDauDto updateLichThiDauDto) {
-        if(updateLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
+    public ResponseEntity<LichThiDauDto> updateLichThiDau(@PathVariable("id") Long id, @RequestBody UpdateLichThiDauDto updateLichThiDauDto) {
+        if(updateLichThiDauDto.getNgayThiDau() !=null && updateLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
             throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
         }
 
-        if(updateLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && updateLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
+        if(updateLichThiDauDto.getNgayThiDau() !=null && updateLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && updateLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
             throw new RuntimeException("Gio thi dau phai lon hon gio hien tai");
         }
 
-        if(updateLichThiDauDto.getMaDoiNha().equals(updateLichThiDauDto.getMaDoiKhach())) {
+        if(updateLichThiDauDto.getMaDoiNha() !=null &&  updateLichThiDauDto.getMaDoiNha().equals(updateLichThiDauDto.getMaDoiKhach())) {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 

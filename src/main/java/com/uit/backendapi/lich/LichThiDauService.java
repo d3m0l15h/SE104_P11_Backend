@@ -1,20 +1,26 @@
 package com.uit.backendapi.lich;
 
+import com.uit.backendapi.Utils;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
+import com.uit.backendapi.doi_bong.dto.DoiBongDto;
+import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
+import com.uit.backendapi.lich.dto.LichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import com.uit.backendapi.mua_giai.MuaGiaiRepository;
+import com.uit.backendapi.mua_giai.dto.MuaGiaiDto;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,52 +28,56 @@ public class LichThiDauService implements ILichThiDauService {
     private final LichThiDauRepository lichThiDauRepository;
     private final DoiBongRepository doiBongRepository;
     private final MuaGiaiRepository muaGiaiRepository;
+    private final ModelMapper modelMapper;
 
-    @Override
-    public List<LichThiDau> getAllLichThiDau() {
-        return lichThiDauRepository.findAll();
+    private LichThiDauDto toDto(LichThiDau lichThiDau) {
+        LichThiDauDto lichThiDauDto = modelMapper.map(lichThiDau, LichThiDauDto.class);
+        lichThiDauDto.setMaDoiNha(modelMapper.map(lichThiDau.getMaDoiNha(), DoiBongDto.class));
+        lichThiDauDto.setMaDoiKhach(modelMapper.map(lichThiDau.getMaDoiKhach(), DoiBongDto.class));
+        lichThiDauDto.setMaMuaGiai(modelMapper.map(lichThiDau.getMaMuaGiai(), MuaGiaiDto.class));
+        return lichThiDauDto;
     }
 
     @Override
-    public LichThiDau getLichThiDauById(Long id) {
-        return lichThiDauRepository.findById(id).orElseThrow(
+    public List<LichThiDauDto> getAllLichThiDau() {
+        return lichThiDauRepository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public LichThiDauDto getLichThiDauById(Long id) {
+        return toDto(lichThiDauRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Lich thi dau not found with id: " + id)
-        );
+        ));
     }
 
-    public List<LichThiDau> getLichThiDauByDoiBongOrMuaGiai(Long maDoiBong, Long maMuaGiai) {
-        DoiBong doiBong = doiBongRepository.findById(maDoiBong).orElseThrow(
-                () -> new RuntimeException("Doi bong not found with id: " + maDoiBong)
-        );
-
-        MuaGiai muaGiai = muaGiaiRepository.findById(maMuaGiai).orElse(null);
-
-        return lichThiDauRepository.findByMaDoiNhaOrMaDoiKhachOrMaMuaGiai(doiBong, doiBong, muaGiai);
-    }
-
-    public List<LichThiDau> getLichThiDauByVongThiDauAndMaMuaGiai(String vongThiDau, Long maMuaGiai) {
-        MuaGiai muaGiai = muaGiaiRepository.findById(maMuaGiai).orElseThrow(
-                () -> new RuntimeException("Mua giai not found with id: " + maMuaGiai)
+    public List<LichThiDauDto> getLichThiDauByMuaGiai(String nam, String vongThiDau, Long maDoiBong) {
+        MuaGiai muaGiai = muaGiaiRepository.findByNamOrId(nam, Integer.valueOf(nam)).orElseThrow(
+                () -> new ResourceNotFoundException("Mua giai not found: " + nam)
         );
 
-        return lichThiDauRepository.findByVongThiDauAndMaMuaGiai(vongThiDau, muaGiai);
+        DoiBong doiBong = null;
+        if (maDoiBong != null) {
+            doiBong = doiBongRepository.findById(maDoiBong).orElseThrow(
+                    () -> new ResourceNotFoundException("Doi bong not found with id: " + maDoiBong)
+            );
+        }
+
+        return lichThiDauRepository.findByMaDoiNhaOrMaDoiKhachOrVongThiDauOrMaMuaGiai(
+                        doiBong, doiBong, vongThiDau, muaGiai).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<LichThiDau> getLichThiDauByMaMuaGiai(String nam) {
-        MuaGiai muaGiai = muaGiaiRepository.findByNamContaining(nam);
-        return lichThiDauRepository.findByMaMuaGiai(muaGiai);
-    }
-
-    public List<LichThiDau> getLichThiDauByNgayThiDau(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd) {
-        return lichThiDauRepository.findByNgayThiDauBetween(ngayThiDauStart, ngayThiDauEnd);
-    }
-
-    public List<LichThiDau> getLichThiDauByNgayThiDauAndGioThiDau(LocalDate ngayThiDau, LocalTime gioThiDau) {
-        return lichThiDauRepository.findByNgayThiDauAndGioThiDau(ngayThiDau, gioThiDau);
+    public List<LichThiDauDto> getLichThiDauByNgayThiDau(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd) {
+        return lichThiDauRepository.findByNgayThiDauBetween(ngayThiDauStart, ngayThiDauEnd).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public LichThiDau createLichThiDau(CreateLichThiDauDto lichThiDauDto) {
+    public LichThiDauDto createLichThiDau(CreateLichThiDauDto lichThiDauDto) {
         DoiBong doiNha = doiBongRepository.findById(lichThiDauDto.getMaDoiNha()).orElseThrow(
                 () -> new RuntimeException("Doi bong not found with id: " + lichThiDauDto.getMaDoiNha())
         );
@@ -90,20 +100,20 @@ public class LichThiDauService implements ILichThiDauService {
                 muaGiai
         );
 
-        return lichThiDauRepository.save(lichThiDau);
+        return toDto(lichThiDauRepository.save(lichThiDau));
     }
 
     @Override
-    public LichThiDau updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto) {
-        return lichThiDauRepository.findById(id)
+    public LichThiDauDto updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto) {
+        return toDto(lichThiDauRepository.findById(id)
                 .map(existingLichThiDau -> updateExistingLichThiDau(existingLichThiDau, updateLichThiDauDto))
                 .map(lichThiDauRepository::save)
                 .orElseThrow(() -> new RuntimeException("Lich thi dau not found with id: " + id)
-        );
+                ));
     }
 
     private LichThiDau updateExistingLichThiDau(LichThiDau existingLichThiDau, UpdateLichThiDauDto updateLichThiDauDto) {
-        BeanUtils.copyProperties(updateLichThiDauDto, existingLichThiDau, "id", "maDoiNha", "maDoiKhach", "maMuaGiai");
+        Utils.copyNonNullProperties(updateLichThiDauDto, existingLichThiDau, "id", "maDoiNha", "maDoiKhach", "maMuaGiai");
 
         if (updateLichThiDauDto.getMaDoiNha() != null) {
             existingLichThiDau.setMaDoiNha(doiBongRepository.findById(updateLichThiDauDto.getMaDoiNha()).orElseThrow(
@@ -127,6 +137,11 @@ public class LichThiDauService implements ILichThiDauService {
     }
 
     public void deleteLichThiDau(Long id) {
-        lichThiDauRepository.deleteById(id);
+        lichThiDauRepository.findById(id).ifPresentOrElse(
+                lichThiDauRepository::delete,
+                () -> {
+                    throw new RuntimeException("Lich thi dau not found with id: " + id);
+                }
+        );
     }
 }

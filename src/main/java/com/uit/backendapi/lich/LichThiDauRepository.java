@@ -9,13 +9,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface LichThiDauRepository extends JpaRepository<LichThiDau, Long> {
-    List<LichThiDau> findByMaDoiNhaOrMaDoiKhachOrMaMuaGiai(DoiBong doiNha, DoiBong doiKhach, MuaGiai muaGiai);
-
-    List<LichThiDau> findByMaMuaGiai(MuaGiai muaGiai);
-
-    List<LichThiDau> findByVongThiDauAndMaMuaGiai(String vongThiDau, MuaGiai muaGiai);
+    List<LichThiDau> findByMaDoiNhaOrMaDoiKhachOrVongThiDauOrMaMuaGiai(DoiBong maDoiNha, DoiBong maDoiKhach, String vongThiDau, MuaGiai maMuaGiai);
 
     List<LichThiDau> findByNgayThiDauBetween(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd);
 
-    List<LichThiDau> findByNgayThiDauAndGioThiDau(LocalDate ngayThiDau, LocalTime gioThiDau);
 }
