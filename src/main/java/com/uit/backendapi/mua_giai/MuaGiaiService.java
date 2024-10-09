@@ -1,7 +1,9 @@
 package com.uit.backendapi.mua_giai;
 
+import com.uit.backendapi.Utils;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
+import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.mua_giai.dto.CreateMuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.UpdateMuaGiaiDto;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class MuaGiaiService implements IMuaGiaiService {
     @Override
     public MuaGiai getMuaGiaiById(Long id) {
         return muaGiaiRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Mua giai not found with id: " + id)
+                new ResourceNotFoundException("Mua giai not found with id: " + id)
         );
     }
 
@@ -37,7 +39,7 @@ public class MuaGiaiService implements IMuaGiaiService {
         createMuaGiaiDto.getDoiVoDich().ifPresent(
                 doiVoDichId -> {
                     DoiBong doiVoDich = doiBongRepository.findById(doiVoDichId).orElseThrow(
-                            () -> new RuntimeException("Doi bong not found with id: " + doiVoDichId)
+                            () -> new ResourceNotFoundException("Doi bong not found with id: " + doiVoDichId)
                     );
                     muaGiai.setDoiVoDich(doiVoDich);
                 }
@@ -51,15 +53,15 @@ public class MuaGiaiService implements IMuaGiaiService {
         return muaGiaiRepository.findById(id)
                 .map(existingMuaGiai -> updateExistingMuaGiai(existingMuaGiai, updateMuaGiaiDto))
                 .map(muaGiaiRepository::save)
-                .orElseThrow(() -> new RuntimeException("Mua giai not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Mua giai not found with id: " + id));
     }
 
     private MuaGiai updateExistingMuaGiai(MuaGiai existingMuaGiai, UpdateMuaGiaiDto updateMuaGiaiDto) {
-        existingMuaGiai.setNam(updateMuaGiaiDto.getNam());
+        Utils.copyNonNullProperties(updateMuaGiaiDto, existingMuaGiai, "id");
 
         updateMuaGiaiDto.getDoiVoDich().ifPresent(doiVoDichId -> {
             DoiBong doiVoDich = doiBongRepository.findById(doiVoDichId).orElseThrow(
-                    () -> new RuntimeException("Doi bong not found with id: " + doiVoDichId)
+                    () -> new ResourceNotFoundException("Doi bong not found with id: " + doiVoDichId)
             );
             existingMuaGiai.setDoiVoDich(doiVoDich);
         });
