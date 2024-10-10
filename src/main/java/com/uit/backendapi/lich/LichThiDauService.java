@@ -3,23 +3,20 @@ package com.uit.backendapi.lich;
 import com.uit.backendapi.Utils;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
-import com.uit.backendapi.doi_bong.dto.DoiBongDto;
+import com.uit.backendapi.doi_bong.dto.DoiBongLichThiDauDto;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
 import com.uit.backendapi.lich.dto.LichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import com.uit.backendapi.mua_giai.MuaGiaiRepository;
-import com.uit.backendapi.mua_giai.dto.MuaGiaiDto;
+import com.uit.backendapi.mua_giai.dto.MuaGiaiSimpleDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -32,9 +29,9 @@ public class LichThiDauService implements ILichThiDauService {
 
     private LichThiDauDto toDto(LichThiDau lichThiDau) {
         LichThiDauDto lichThiDauDto = modelMapper.map(lichThiDau, LichThiDauDto.class);
-        lichThiDauDto.setMaDoiNha(modelMapper.map(lichThiDau.getMaDoiNha(), DoiBongDto.class));
-        lichThiDauDto.setMaDoiKhach(modelMapper.map(lichThiDau.getMaDoiKhach(), DoiBongDto.class));
-        lichThiDauDto.setMaMuaGiai(modelMapper.map(lichThiDau.getMaMuaGiai(), MuaGiaiDto.class));
+        lichThiDauDto.setMaDoiNha(modelMapper.map(lichThiDau.getMaDoiNha(), DoiBongLichThiDauDto.class));
+        lichThiDauDto.setMaDoiKhach(modelMapper.map(lichThiDau.getMaDoiKhach(), DoiBongLichThiDauDto.class));
+        lichThiDauDto.setMaMuaGiai(modelMapper.map(lichThiDau.getMaMuaGiai(), MuaGiaiSimpleDto.class));
         return lichThiDauDto;
     }
 

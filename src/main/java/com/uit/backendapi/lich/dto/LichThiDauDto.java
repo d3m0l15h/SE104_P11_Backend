@@ -1,12 +1,15 @@
 package com.uit.backendapi.lich.dto;
 
-import com.uit.backendapi.doi_bong.dto.DoiBongDto;
-import com.uit.backendapi.mua_giai.dto.MuaGiaiDto;
+import com.uit.backendapi.doi_bong.dto.DoiBongLichThiDauDto;
+import com.uit.backendapi.ket_qua.KetQuaThiDau;
+import com.uit.backendapi.models.DoiHinhRaSan;
+import com.uit.backendapi.mua_giai.dto.MuaGiaiSimpleDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +19,9 @@ public class LichThiDauDto {
     private LocalDate ngayThiDau;
     private LocalTime gioThiDau;
     private String sanThiDau;
-    private DoiBongDto maDoiNha;
-    private DoiBongDto maDoiKhach;
-    private MuaGiaiDto maMuaGiai;
+    private DoiBongLichThiDauDto maDoiNha;
+    private DoiBongLichThiDauDto maDoiKhach;
+    private MuaGiaiSimpleDto maMuaGiai;
+    private Set<DoiHinhRaSan> doiHinhRaSans;
+    private Set<KetQuaThiDau> ketQuaThiDaus;
 }
