@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uit.backendapi.bxh.BangXepHang;
+import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.models.DoiHinhRaSan;
 import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.mua_giai.MuaGiai;
@@ -65,7 +66,10 @@ public class DoiBong {
     private String aoDuBi;
 
     @OneToMany(mappedBy = "maDoi")
-    private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
+    private Set<CauThu> cauThus = new LinkedHashSet<>();
+
+//    @OneToMany(mappedBy = "maDoi")
+//    private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
 
 //    @OneToMany(mappedBy = "maDoi")
 //    private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();

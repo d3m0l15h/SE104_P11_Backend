@@ -1,6 +1,7 @@
 package com.uit.backendapi.doi_bong;
 
 import com.uit.backendapi.doi_bong.dto.CreateDoiBongDto;
+import com.uit.backendapi.doi_bong.dto.DoiBongDto;
 import com.uit.backendapi.doi_bong.dto.UpdateDoiBongDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +22,17 @@ public class DoiBongController {
         }
 
         @GetMapping
-        public ResponseEntity<List<DoiBong>> getAllDoiBong() {
+        public ResponseEntity<List<DoiBongDto>> getAllDoiBong() {
             return ResponseEntity.ok(doiBongService.getAllDoiBong());
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<DoiBong> getDoiBongById(@PathVariable("id") Long id) {
-            DoiBong doiBong = doiBongService.getDoiBongById(id);
-            return ResponseEntity.ok(doiBong);
+        public ResponseEntity<DoiBongDto> getDoiBongById(@PathVariable("id") Long id) {
+            return ResponseEntity.ok(doiBongService.getDoiBongById(id));
         }
 
         @PostMapping
-        public ResponseEntity<DoiBong> createDoiBong(@ModelAttribute CreateDoiBongDto createDoiBongDto) throws IOException {
+        public ResponseEntity<DoiBongDto> createDoiBong(@ModelAttribute CreateDoiBongDto createDoiBongDto) throws IOException {
             if(createDoiBongDto.getAoChinhThuc() == null || createDoiBongDto.getAoDuBi() == null) {
                 return ResponseEntity.badRequest().build();
             }
@@ -40,7 +40,7 @@ public class DoiBongController {
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<DoiBong> updateDoiBong(@PathVariable("id") Long id, @ModelAttribute UpdateDoiBongDto updateDoiBongDto) throws IOException {
+        public ResponseEntity<DoiBongDto> updateDoiBong(@PathVariable("id") Long id, @ModelAttribute UpdateDoiBongDto updateDoiBongDto) throws IOException {
             return ResponseEntity.ok(doiBongService.updateDoiBong(id, updateDoiBongDto));
         }
 

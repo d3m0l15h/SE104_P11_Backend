@@ -4,9 +4,11 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.uit.backendapi.Utils;
 import com.uit.backendapi.doi_bong.dto.CreateDoiBongDto;
+import com.uit.backendapi.doi_bong.dto.DoiBongDto;
 import com.uit.backendapi.doi_bong.dto.UpdateDoiBongDto;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,21 +23,26 @@ import java.util.Map;
 public class DoiBongService implements IDoiBongService {
     private final DoiBongRepository doiBongRepository;
     private final Cloudinary cloudinary;
+    private final ModelMapper modelMapper;
 
-    @Override
-    public List<DoiBong> getAllDoiBong() {
-        return doiBongRepository.findAll();
+    private DoiBongDto toDto(DoiBong doiBong) {
+        return modelMapper.map(doiBong, DoiBongDto.class);
     }
 
     @Override
-    public DoiBong getDoiBongById(Long id) {
-        return doiBongRepository.findById(id).orElseThrow(
+    public List<DoiBongDto> getAllDoiBong() {
+        return doiBongRepository.findAll().stream().map(this::toDto).toList();
+    }
+
+    @Override
+    public DoiBongDto getDoiBongById(Long id) {
+        return toDto(doiBongRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Doi bong not found")
-        );
+        ));
     }
 
     @Override
-    public DoiBong createDoiBong(CreateDoiBongDto createDoiBongDto) throws IOException {
+    public DoiBongDto createDoiBong(CreateDoiBongDto createDoiBongDto) throws IOException {
         DoiBong doiBong = new DoiBong();
         doiBong.setAoChinhThuc("");
         doiBong.setAoDuBi("");
@@ -49,7 +56,7 @@ public class DoiBongService implements IDoiBongService {
         doiBong.setAoChinhThuc(aoChinhThucUrl);
         doiBong.setAoDuBi(aoDuBiUrl);
 
-        return doiBongRepository.save(doiBong);
+        return toDto(doiBongRepository.save(doiBong));
     }
 
     private String uploadToCloudinary(byte[] fileBytes, String folder, String publicId) throws IOException {
@@ -66,8 +73,8 @@ public class DoiBongService implements IDoiBongService {
     }
 
     @Override
-    public DoiBong updateDoiBong(Long id, UpdateDoiBongDto updateDoiBongDto) {
-        return doiBongRepository.findById(id)
+    public DoiBongDto updateDoiBong(Long id, UpdateDoiBongDto updateDoiBongDto) {
+        return toDto(doiBongRepository.findById(id)
                 .map(existingDoiBong -> {
                     try {
                         return updateExistingDoiBong(existingDoiBong, updateDoiBongDto);
@@ -76,7 +83,7 @@ public class DoiBongService implements IDoiBongService {
                     }
                 })
                 .map(doiBongRepository::save)
-                .orElseThrow(() -> new ResourceNotFoundException("Doi bong not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Doi bong not found")));
     }
 
     private DoiBong updateExistingDoiBong(DoiBong existingDoiBong, UpdateDoiBongDto updateDoiBongDto) throws IOException {
