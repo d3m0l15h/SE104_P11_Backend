@@ -34,8 +34,9 @@ public class KetQuaThiDau {
     @Column(name = "SoBanDoiNha", nullable = false)
     private Integer soBanDoiNha;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "CauThuXuatSac", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ColumnDefault("NULL")
+    @JoinColumn(name = "CauThuXuatSac")
     private CauThu cauThuXuatSac;
 
     @Nationalized
@@ -55,10 +56,9 @@ public class KetQuaThiDau {
     @OneToMany(mappedBy = "maKetQua")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();
 
-    public KetQuaThiDau( LichThiDau maLichThiDau, Integer soBanDoiNha, CauThu cauThuXuatSac, String ghiChu, Integer soBanDoiKhach) {
+    public KetQuaThiDau( LichThiDau maLichThiDau, Integer soBanDoiNha, String ghiChu, Integer soBanDoiKhach) {
         this.maLichThiDau = maLichThiDau;
         this.soBanDoiNha = soBanDoiNha;
-        this.cauThuXuatSac = cauThuXuatSac;
         this.ghiChu = ghiChu;
         this.soBanDoiKhach = soBanDoiKhach;
     }

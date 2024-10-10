@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,17 +42,20 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
                 () -> new ResourceNotFoundException("Lich thi dau not found")
         );
 
-        CauThu cauThuXuatSac = cauThuRepository.findById(createKetQuaThiDauDto.getCauThuXuatSac()).orElseThrow(
-                () -> new ResourceNotFoundException("Cau thu not found")
-        );
-
         KetQuaThiDau ketQuaThiDau = new KetQuaThiDau(
                 lichThiDau,
-                createKetQuaThiDauDto.getSoBanDoiNha(),
-                cauThuXuatSac,
+                Objects.requireNonNullElse(createKetQuaThiDauDto.getSoBanDoiNha(), 0),
                 createKetQuaThiDauDto.getGhiChu(),
-                createKetQuaThiDauDto.getSoBanDoiKhach()
+                Objects.requireNonNullElse(createKetQuaThiDauDto.getSoBanDoiKhach(), 0)
         );
+
+        if (createKetQuaThiDauDto.getCauThuXuatSac() != null) {
+            CauThu cauThuXuatSac = cauThuRepository.findById(createKetQuaThiDauDto.getCauThuXuatSac()).orElseThrow(
+                    () -> new ResourceNotFoundException("Cau thu not found")
+            );
+            ketQuaThiDau.setCauThuXuatSac(cauThuXuatSac);
+        }
+        
 
         return ketQuaThiDauRepository.save(ketQuaThiDau);
     }
@@ -62,7 +66,7 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
                 .map(existingKetQuaThiDau -> updateExistingKetQuaThiDau(existingKetQuaThiDau, updateKetQuaThiDauDto))
                 .map(ketQuaThiDauRepository::save)
                 .orElseThrow(() -> new ResourceNotFoundException("Ket qua thi dau not found")
-        );
+                );
     }
 
     private KetQuaThiDau updateExistingKetQuaThiDau(KetQuaThiDau existingKetQuaThiDau, UpdateKetQuaThiDauDto updateKetQuaThiDauDto) {
