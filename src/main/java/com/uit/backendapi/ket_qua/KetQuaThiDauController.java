@@ -15,6 +15,7 @@ import com.uit.backendapi.thay_nguoi.dto.UpdateThayNguoiDto;
 import com.uit.backendapi.the_phat.ThePhat;
 import com.uit.backendapi.the_phat.ThePhatService;
 import com.uit.backendapi.the_phat.dto.CreateThePhatDto;
+import com.uit.backendapi.the_phat.dto.ThePhatDto;
 import com.uit.backendapi.the_phat.dto.UpdateThePhatDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -39,6 +40,10 @@ public class KetQuaThiDauController {
 
     private BanThangDto toBanThangDto(BanThang banThang) {
         return modelMapper.map(banThang, BanThangDto.class);
+    }
+
+    private ThePhatDto toThePhatDto(ThePhat thePhat) {
+        return modelMapper.map(thePhat, ThePhatDto.class);
     }
 
     //-----------------------------Ket Qua----------------------------
@@ -97,23 +102,23 @@ public class KetQuaThiDauController {
 
     //-------------------------------The phat--------------------------------
     @GetMapping("/{id}/the-phat")
-    public ResponseEntity<List<ThePhat>> getThePhatByKetQua(@PathVariable("id") Long id) {
+    public ResponseEntity<List<ThePhatDto>> getThePhatByKetQua(@PathVariable("id") Long id) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(thePhatService.getThePhatByMaKetQua(ketQuaThiDau));
+        return ResponseEntity.ok(thePhatService.getThePhatByMaKetQua(ketQuaThiDau).stream().map(this::toThePhatDto).toList());
     }
 
     @PostMapping("/{id}/the-phat")
-    public ResponseEntity<ThePhat> createThePhat(@PathVariable("id") Long id, @RequestBody CreateThePhatDto createThePhatDto) {
+    public ResponseEntity<ThePhatDto> createThePhat(@PathVariable("id") Long id, @RequestBody CreateThePhatDto createThePhatDto) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(thePhatService.createThePhatByMaKetQua(ketQuaThiDau, createThePhatDto));
+        return ResponseEntity.ok(toThePhatDto(thePhatService.createThePhatByMaKetQua(ketQuaThiDau, createThePhatDto)));
     }
 
     @PutMapping("/{id}/the-phat/{maThePhat}")
-    public ResponseEntity<ThePhat> updateThePhat(@PathVariable("id") Long id,
+    public ResponseEntity<ThePhatDto> updateThePhat(@PathVariable("id") Long id,
                                                 @PathVariable("maThePhat") Long maThePhat,
                                                 @RequestBody UpdateThePhatDto updateThePhatDto) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(thePhatService.updateThePhatByMaKetQuaAndId(ketQuaThiDau, maThePhat, updateThePhatDto));
+        return ResponseEntity.ok(toThePhatDto(thePhatService.updateThePhatByMaKetQuaAndId(ketQuaThiDau, maThePhat, updateThePhatDto)));
     }
 
     @DeleteMapping("/{id}/the-phat/{maThePhat}")
