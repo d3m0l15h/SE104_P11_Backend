@@ -2,6 +2,7 @@ package com.uit.backendapi.ket_qua;
 
 import com.uit.backendapi.ban_thang.BanThang;
 import com.uit.backendapi.ban_thang.BanThangService;
+import com.uit.backendapi.ban_thang.dto.BanThangDto;
 import com.uit.backendapi.ban_thang.dto.CreateBanThangDto;
 import com.uit.backendapi.ban_thang.dto.UpdateBanThangDto;
 import com.uit.backendapi.ket_qua.dto.CreateKetQuaThiDauDto;
@@ -32,29 +33,33 @@ public class KetQuaThiDauController {
     private final ThayNguoiService thayNguoiService;
     private final ModelMapper modelMapper;
 
-    private KetQuaThiDauDto toDto(KetQuaThiDau ketQuaThiDau) {
+    private KetQuaThiDauDto toKetQuaThiDauDto(KetQuaThiDau ketQuaThiDau) {
         return modelMapper.map(ketQuaThiDau, KetQuaThiDauDto.class);
+    }
+
+    private BanThangDto toBanThangDto(BanThang banThang) {
+        return modelMapper.map(banThang, BanThangDto.class);
     }
 
     //-----------------------------Ket Qua----------------------------
     @GetMapping()
     public ResponseEntity<List<KetQuaThiDauDto>> getAllKetQuaThiDau() {
-        return ResponseEntity.ok(ketQuaThiDauService.getAllKetQuaThiDau().stream().map(this::toDto).toList());
+        return ResponseEntity.ok(ketQuaThiDauService.getAllKetQuaThiDau().stream().map(this::toKetQuaThiDauDto).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<KetQuaThiDauDto> getKetQuaThiDauById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(toDto(ketQuaThiDauService.getKetQuaThiDauById(id)));
+        return ResponseEntity.ok(toKetQuaThiDauDto(ketQuaThiDauService.getKetQuaThiDauById(id)));
     }
 
     @PostMapping()
     public ResponseEntity<KetQuaThiDauDto> createKetQuaThiDau(@RequestBody CreateKetQuaThiDauDto createKetQuaThiDauDto) {
-        return ResponseEntity.ok(toDto(ketQuaThiDauService.createKetQuaThiDau(createKetQuaThiDauDto)));
+        return ResponseEntity.ok(toKetQuaThiDauDto(ketQuaThiDauService.createKetQuaThiDau(createKetQuaThiDauDto)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<KetQuaThiDauDto> updateKetQuaThiDau(@PathVariable("id") Long id, @RequestBody UpdateKetQuaThiDauDto updateKetQuaThiDauDto) {
-        return ResponseEntity.ok(toDto(ketQuaThiDauService.updateKetQuaThiDau(id, updateKetQuaThiDauDto)));
+        return ResponseEntity.ok(toKetQuaThiDauDto(ketQuaThiDauService.updateKetQuaThiDau(id, updateKetQuaThiDauDto)));
     }
 
     @DeleteMapping("/{id}")
@@ -65,22 +70,22 @@ public class KetQuaThiDauController {
 
     //---------------------------------Ban Thang----------------------------------------
     @GetMapping("/{id}/ban-thang")
-    public ResponseEntity<List<BanThang>> getBanThangByKetQua(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(banThangService.getBanThangByKetQua(id));
+    public ResponseEntity<List<BanThangDto>> getBanThangByKetQua(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(banThangService.getBanThangByKetQua(id).stream().map(this::toBanThangDto).toList());
     }
 
     @PostMapping("/{id}/ban-thang")
-    public ResponseEntity<BanThang> createBanThang(@PathVariable("id") Long id, @RequestBody CreateBanThangDto createBanThangDto) {
+    public ResponseEntity<BanThangDto> createBanThang(@PathVariable("id") Long id, @RequestBody CreateBanThangDto createBanThangDto) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(banThangService.createBanThangByKetQua(ketQuaThiDau, createBanThangDto));
+        return ResponseEntity.ok(toBanThangDto(banThangService.createBanThangByKetQua(ketQuaThiDau, createBanThangDto)));
     }
 
     @PutMapping("/{id}/ban-thang/{maBanThang}")
-    public ResponseEntity<BanThang> updateBanThang(@PathVariable("id") Long id,
+    public ResponseEntity<BanThangDto> updateBanThang(@PathVariable("id") Long id,
                                                    @PathVariable("maBanThang") Long maBanThang,
                                                    @RequestBody UpdateBanThangDto updateBanThangDto) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(banThangService.updateBanThangByKetQuaAndId(ketQuaThiDau, maBanThang, updateBanThangDto));
+        return ResponseEntity.ok(toBanThangDto(banThangService.updateBanThangByKetQuaAndId(ketQuaThiDau, maBanThang, updateBanThangDto)));
     }
 
     @DeleteMapping("/{id}/ban-thang/{maBanThang}")

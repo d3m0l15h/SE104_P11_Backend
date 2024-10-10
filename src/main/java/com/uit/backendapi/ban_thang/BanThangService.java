@@ -1,5 +1,6 @@
 package com.uit.backendapi.ban_thang;
 
+import com.uit.backendapi.Utils;
 import com.uit.backendapi.ban_thang.dto.CreateBanThangDto;
 import com.uit.backendapi.ban_thang.dto.UpdateBanThangDto;
 import com.uit.backendapi.cau_thu.CauThu;
@@ -50,7 +51,7 @@ public class BanThangService implements IBanThangService {
     }
 
     private BanThang updateExistingBanThang(BanThang existingBanThang, UpdateBanThangDto updateBanThangDto) {
-        BeanUtils.copyProperties(updateBanThangDto, existingBanThang,  "id", "maKetQua", "maCauThu");
+        Utils.copyNonNullProperties(updateBanThangDto, existingBanThang,  "id", "maKetQua", "maCauThu");
 
         if(updateBanThangDto.getMaCauThu() != null) {
             CauThu cauThu = cauThuRepository.findById(updateBanThangDto.getMaCauThu())
