@@ -3,14 +3,12 @@ package com.uit.backendapi.lich;
 import com.uit.backendapi.Utils;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
-import com.uit.backendapi.doi_bong.dto.DoiBongLichThiDauDto;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
 import com.uit.backendapi.lich.dto.LichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import com.uit.backendapi.mua_giai.MuaGiaiRepository;
-import com.uit.backendapi.mua_giai.dto.MuaGiaiSimpleDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,27 +23,21 @@ public class LichThiDauService implements ILichThiDauService {
     private final LichThiDauRepository lichThiDauRepository;
     private final DoiBongRepository doiBongRepository;
     private final MuaGiaiRepository muaGiaiRepository;
-    private final ModelMapper modelMapper;
 
-    private LichThiDauDto toDto(LichThiDau lichThiDau) {
-        return modelMapper.map(lichThiDau, LichThiDauDto.class);
+
+    @Override
+    public List<LichThiDau> getAllLichThiDau() {
+        return lichThiDauRepository.findAll();
     }
 
     @Override
-    public List<LichThiDauDto> getAllLichThiDau() {
-        return lichThiDauRepository.findAll().stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public LichThiDauDto getLichThiDauById(Long id) {
-        return toDto(lichThiDauRepository.findById(id).orElseThrow(
+    public LichThiDau getLichThiDauById(Long id) {
+        return lichThiDauRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Lich thi dau not found with id: " + id)
-        ));
+        );
     }
 
-    public List<LichThiDauDto> getLichThiDauByMuaGiai(String nam, String vongThiDau, Long maDoiBong) {
+    public List<LichThiDau> getLichThiDauByMuaGiai(String nam, String vongThiDau, Long maDoiBong) {
         MuaGiai muaGiai = muaGiaiRepository.findByNamOrId(nam, Integer.valueOf(nam)).orElseThrow(
                 () -> new ResourceNotFoundException("Mua giai not found: " + nam)
         );
@@ -58,19 +50,15 @@ public class LichThiDauService implements ILichThiDauService {
         }
 
         return lichThiDauRepository.findByMaDoiNhaOrMaDoiKhachOrVongThiDauOrMaMuaGiai(
-                        doiBong, doiBong, vongThiDau, muaGiai).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+                        doiBong, doiBong, vongThiDau, muaGiai);
     }
 
-    public List<LichThiDauDto> getLichThiDauByNgayThiDau(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd) {
-        return lichThiDauRepository.findByNgayThiDauBetween(ngayThiDauStart, ngayThiDauEnd).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    public List<LichThiDau> getLichThiDauByNgayThiDau(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd) {
+        return lichThiDauRepository.findByNgayThiDauBetween(ngayThiDauStart, ngayThiDauEnd);
     }
 
     @Override
-    public LichThiDauDto createLichThiDau(CreateLichThiDauDto lichThiDauDto) {
+    public LichThiDau createLichThiDau(CreateLichThiDauDto lichThiDauDto) {
         DoiBong doiNha = doiBongRepository.findById(lichThiDauDto.getMaDoiNha()).orElseThrow(
                 () -> new RuntimeException("Doi bong not found with id: " + lichThiDauDto.getMaDoiNha())
         );
@@ -93,16 +81,16 @@ public class LichThiDauService implements ILichThiDauService {
                 muaGiai
         );
 
-        return toDto(lichThiDauRepository.save(lichThiDau));
+        return lichThiDauRepository.save(lichThiDau);
     }
 
     @Override
-    public LichThiDauDto updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto) {
-        return toDto(lichThiDauRepository.findById(id)
+    public LichThiDau updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto) {
+        return lichThiDauRepository.findById(id)
                 .map(existingLichThiDau -> updateExistingLichThiDau(existingLichThiDau, updateLichThiDauDto))
                 .map(lichThiDauRepository::save)
                 .orElseThrow(() -> new RuntimeException("Lich thi dau not found with id: " + id)
-                ));
+                );
     }
 
     private LichThiDau updateExistingLichThiDau(LichThiDau existingLichThiDau, UpdateLichThiDauDto updateLichThiDauDto) {

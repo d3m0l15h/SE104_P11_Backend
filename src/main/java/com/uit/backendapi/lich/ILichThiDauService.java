@@ -7,9 +7,9 @@ import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import java.util.List;
 
 public interface ILichThiDauService {
-    LichThiDauDto createLichThiDau(CreateLichThiDauDto createLichThiDauDto);
-    LichThiDauDto updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto);
-    LichThiDauDto getLichThiDauById(Long id);
-    List<LichThiDauDto> getAllLichThiDau();
+    LichThiDau createLichThiDau(CreateLichThiDauDto createLichThiDauDto);
+    LichThiDau updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto);
+    LichThiDau getLichThiDauById(Long id);
+    List<LichThiDau> getAllLichThiDau();
     void deleteLichThiDau(Long id);
 }

@@ -4,6 +4,7 @@ import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
 import com.uit.backendapi.lich.dto.LichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +18,20 @@ import java.util.List;
 @RequestMapping("/api/lich-thi-dau")
 public class LichThiDauController {
     private final LichThiDauService lichThiDauService;
+    private final ModelMapper modelMapper;
+
+    private LichThiDauDto toDto(LichThiDau lichThiDau) {
+        return modelMapper.map(lichThiDau, LichThiDauDto.class);
+    }
 
     @GetMapping
     public ResponseEntity<List<LichThiDauDto>> getAllLichThiDau() {
-        return ResponseEntity.ok(lichThiDauService.getAllLichThiDau());
+        return ResponseEntity.ok(lichThiDauService.getAllLichThiDau().stream().map(this::toDto).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<LichThiDauDto> getLichThiDauById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauById(id));
+        return ResponseEntity.ok(toDto(lichThiDauService.getLichThiDauById(id)));
     }
 
     @GetMapping("/mua-giai/{nam}")
@@ -33,14 +39,14 @@ public class LichThiDauController {
             @PathVariable("nam") String nam,
             @RequestParam(name = "vong-thi-dau", required = false) String vongThiDau,
             @RequestParam(name = "ma-doi-bong", required = false) Long maDoiBong) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByMuaGiai(nam, vongThiDau, maDoiBong));
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByMuaGiai(nam, vongThiDau, maDoiBong).stream().map(this::toDto).toList());
     }
 
     @GetMapping("/ngay-thi-dau")
     public ResponseEntity<List<LichThiDauDto>> getLichThiDauByNgayThiDau(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayThiDauStart,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayThiDauEnd) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDau(ngayThiDauStart, ngayThiDauEnd));
+        return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDau(ngayThiDauStart, ngayThiDauEnd).stream().map(this::toDto).toList());
     }
 
     @PostMapping
@@ -57,7 +63,7 @@ public class LichThiDauController {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 
-        return ResponseEntity.ok(lichThiDauService.createLichThiDau(createLichThiDauDto));
+        return ResponseEntity.ok(toDto(lichThiDauService.createLichThiDau(createLichThiDauDto)));
     }
 
     @PutMapping("/{id}")
@@ -74,7 +80,7 @@ public class LichThiDauController {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 
-        return ResponseEntity.ok(lichThiDauService.updateLichThiDau(id, updateLichThiDauDto));
+        return ResponseEntity.ok(toDto(lichThiDauService.updateLichThiDau(id, updateLichThiDauDto)));
     }
 
     @DeleteMapping("/{id}")
