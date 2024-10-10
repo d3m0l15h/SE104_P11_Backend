@@ -67,14 +67,14 @@ public class CauThu {
     @Column(name = "CanNang", nullable = false)
     private Double canNang;
 
-    @OneToMany(mappedBy = "maCauThu")
-    private Set<BanThang> banThangs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "cauThuXuatSac")
-    private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "maCauThu")
-    private Set<ThePhat> thePhats = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "maCauThu")
+//    private Set<BanThang> banThangs = new LinkedHashSet<>();
+//
+//    @OneToMany(mappedBy = "cauThuXuatSac")
+//    private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
+//
+//    @OneToMany(mappedBy = "maCauThu")
+//    private Set<ThePhat> thePhats = new LinkedHashSet<>();
 
     public CauThu(String tenCauThu, LocalDate ngaySinh, String loaiCauThu, DoiBong maDoi, Integer soAo, String viTri, String noiSinh, String quocTich, String tieuSu, Double chieuCao, Double canNang) {
         this.tenCauThu = tenCauThu;

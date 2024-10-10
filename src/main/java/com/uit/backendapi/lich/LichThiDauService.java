@@ -28,11 +28,7 @@ public class LichThiDauService implements ILichThiDauService {
     private final ModelMapper modelMapper;
 
     private LichThiDauDto toDto(LichThiDau lichThiDau) {
-        LichThiDauDto lichThiDauDto = modelMapper.map(lichThiDau, LichThiDauDto.class);
-        lichThiDauDto.setMaDoiNha(modelMapper.map(lichThiDau.getMaDoiNha(), DoiBongLichThiDauDto.class));
-        lichThiDauDto.setMaDoiKhach(modelMapper.map(lichThiDau.getMaDoiKhach(), DoiBongLichThiDauDto.class));
-        lichThiDauDto.setMaMuaGiai(modelMapper.map(lichThiDau.getMaMuaGiai(), MuaGiaiSimpleDto.class));
-        return lichThiDauDto;
+        return modelMapper.map(lichThiDau, LichThiDauDto.class);
     }
 
     @Override

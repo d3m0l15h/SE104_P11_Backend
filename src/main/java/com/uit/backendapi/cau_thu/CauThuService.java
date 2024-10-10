@@ -6,7 +6,6 @@ import com.uit.backendapi.cau_thu.dto.CreateCauThuDto;
 import com.uit.backendapi.cau_thu.dto.UpdateCauThuDto;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
-import com.uit.backendapi.doi_bong.dto.DoiBongDto;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,9 +22,7 @@ public class CauThuService implements ICauThuService {
     private final ModelMapper modelMapper;
 
     private CauThuDto toDto(CauThu cauThu) {
-        CauThuDto cauThuDto = modelMapper.map(cauThu, CauThuDto.class);
-        cauThuDto.setMaDoi(modelMapper.map(cauThu.getMaDoi(), DoiBongDto.class));
-        return cauThuDto;
+        return modelMapper.map(cauThu, CauThuDto.class);
     }
 
     @Override
