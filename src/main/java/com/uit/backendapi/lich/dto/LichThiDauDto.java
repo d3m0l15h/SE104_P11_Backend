@@ -5,14 +5,12 @@ import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import com.uit.backendapi.models.DoiHinhRaSan;
 import com.uit.backendapi.mua_giai.dto.MuaGiaiSimpleDto;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
 public class LichThiDauDto {
     private Integer id;
     private String vongThiDau;

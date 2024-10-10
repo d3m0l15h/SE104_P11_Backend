@@ -1,13 +1,16 @@
 package com.uit.backendapi.ket_qua;
 
+import com.uit.backendapi.Utils;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.cau_thu.CauThuRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.ket_qua.dto.CreateKetQuaThiDauDto;
+import com.uit.backendapi.ket_qua.dto.KetQuaThiDauDto;
 import com.uit.backendapi.ket_qua.dto.UpdateKetQuaThiDauDto;
 import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.lich.LichThiDauRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +66,7 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
     }
 
     private KetQuaThiDau updateExistingKetQuaThiDau(KetQuaThiDau existingKetQuaThiDau, UpdateKetQuaThiDauDto updateKetQuaThiDauDto) {
-        BeanUtils.copyProperties(updateKetQuaThiDauDto, existingKetQuaThiDau, "id", "maLichThiDau", "cauThuXuatSac");
+        Utils.copyNonNullProperties(updateKetQuaThiDauDto, existingKetQuaThiDau, "id", "maLichThiDau", "cauThuXuatSac");
 
         if (updateKetQuaThiDauDto.getMaLichThiDau() != null) {
             LichThiDau lichThiDau = lichThiDauRepository.findById(updateKetQuaThiDauDto.getMaLichThiDau()).orElseThrow(
