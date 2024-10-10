@@ -8,37 +8,30 @@ import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CauThuService implements ICauThuService {
     private final CauThuRepository cauThuRepository;
     private final DoiBongRepository doiBongRepository;
-    private final ModelMapper modelMapper;
 
-    private CauThuDto toDto(CauThu cauThu) {
-        return modelMapper.map(cauThu, CauThuDto.class);
+    @Override
+    public List<CauThu> getAllCauThu() {
+        return cauThuRepository.findAll();
     }
 
     @Override
-    public List<CauThuDto> getAllCauThu() {
-        return cauThuRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public CauThuDto getCauThuById(Long id) {
-        return toDto(cauThuRepository.findById(id).orElseThrow(
+    public CauThu getCauThuById(Long id) {
+        return cauThuRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Cau thu not found")
-        ));
+        );
     }
 
     @Override
-    public CauThuDto createCauThu(CreateCauThuDto createCauThuDto) {
+    public CauThu createCauThu(CreateCauThuDto createCauThuDto) {
         DoiBong doiBong = doiBongRepository.findById(createCauThuDto.getMaDoi()).orElseThrow(
                 () -> new ResourceNotFoundException("Doi bong not found")
         );
@@ -57,17 +50,15 @@ public class CauThuService implements ICauThuService {
                 createCauThuDto.getCanNang()
         );
 
-        return toDto(cauThuRepository.save(cauThu));
+        return cauThuRepository.save(cauThu);
     }
 
     @Override
-    public CauThuDto updateCauThu(Long id, UpdateCauThuDto updateCauThuDto) {
-        return toDto(
-                cauThuRepository.findById(id)
+    public CauThu updateCauThu(Long id, UpdateCauThuDto updateCauThuDto) {
+        return cauThuRepository.findById(id)
                 .map(existingCauThu -> updateExistingCauThu(existingCauThu, updateCauThuDto))
                 .map(cauThuRepository::save
-                ).orElseThrow(() -> new ResourceNotFoundException("Doi bong not found"))
-        );
+                ).orElseThrow(() -> new ResourceNotFoundException("Doi bong not found"));
     }
 
     private CauThu updateExistingCauThu(CauThu existingCauThu, UpdateCauThuDto updateCauThuDto) {

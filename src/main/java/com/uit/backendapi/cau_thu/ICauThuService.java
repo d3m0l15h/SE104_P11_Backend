@@ -7,9 +7,9 @@ import com.uit.backendapi.cau_thu.dto.UpdateCauThuDto;
 import java.util.List;
 
 public interface ICauThuService {
-    List<CauThuDto> getAllCauThu();
-    CauThuDto getCauThuById(Long id);
-    CauThuDto createCauThu(CreateCauThuDto createCauThuDto);
-    CauThuDto updateCauThu(Long id, UpdateCauThuDto updateCauThuDto);
+    List<CauThu> getAllCauThu();
+    CauThu getCauThuById(Long id);
+    CauThu createCauThu(CreateCauThuDto createCauThuDto);
+    CauThu updateCauThu(Long id, UpdateCauThuDto updateCauThuDto);
     void deleteCauThu(Long id);
 }
