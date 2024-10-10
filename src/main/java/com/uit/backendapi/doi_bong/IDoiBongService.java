@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IDoiBongService {
-    List<DoiBongDto> getAllDoiBong();
+    List<DoiBong> getAllDoiBong();
 
-    DoiBongDto getDoiBongById(Long id);
+    DoiBong getDoiBongById(Long id);
 
-    DoiBongDto createDoiBong(CreateDoiBongDto createDoiBongDto) throws IOException;
+    DoiBong createDoiBong(CreateDoiBongDto createDoiBongDto) throws IOException;
 
-    DoiBongDto updateDoiBong(Long id, UpdateDoiBongDto updateDoiBongDto) throws IOException;
+    DoiBong updateDoiBong(Long id, UpdateDoiBongDto updateDoiBongDto) throws IOException;
 
     void deleteDoiBong(Long id);
 }
