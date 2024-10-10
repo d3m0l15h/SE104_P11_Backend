@@ -1,5 +1,6 @@
 package com.uit.backendapi.thay_nguoi;
 
+import com.uit.backendapi.Utils;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.cau_thu.CauThuRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +27,10 @@ public class ThayNguoiService implements IThayNguoiService {
 
     @Override
     public ThayNguoi createThayNguoiByKetQua(KetQuaThiDau maKetQua, CreateThayNguoiDto createThayNguoiDto) {
+        if(Objects.equals(createThayNguoiDto.getMaCauThuRa(), createThayNguoiDto.getMaCauThuVao())) {
+            throw new IllegalArgumentException("Cau thu ra and cau thu vao must be different");
+        }
+
         CauThu maCauThuRa = cauThuRepository.findById(createThayNguoiDto.getMaCauThuRa())
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Cau thu ra not found with id: " + createThayNguoiDto.getMaCauThuRa())
@@ -33,7 +39,6 @@ public class ThayNguoiService implements IThayNguoiService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Cau thu vao not found with id: " + createThayNguoiDto.getMaCauThuVao())
                 );
-
 
         ThayNguoi thayNguoi = new ThayNguoi(
                 maKetQua,
@@ -56,13 +61,16 @@ public class ThayNguoiService implements IThayNguoiService {
     }
 
     private ThayNguoi updateExistingThayNguoi(ThayNguoi existingThayNguoi, UpdateThayNguoiDto updateThayNguoiDto) {
-        BeanUtils.copyProperties(updateThayNguoiDto, existingThayNguoi);
+        Utils.copyNonNullProperties(updateThayNguoiDto, existingThayNguoi, "maKetQua", "id", "maCauThuVao", "maCauThuRa");
 
         if (updateThayNguoiDto.getMaCauThuRa() != null) {
             CauThu maCauThuRa = cauThuRepository.findById(updateThayNguoiDto.getMaCauThuRa())
                     .orElseThrow(
                             () -> new ResourceNotFoundException("Cau thu ra not found with id: " + updateThayNguoiDto.getMaCauThuRa())
                     );
+            if(Objects.equals(maCauThuRa.getId(), existingThayNguoi.getMaCauThuVao().getId())) {
+                throw new IllegalArgumentException("Cau thu ra and cau thu vao must be different");
+            }
             existingThayNguoi.setMaCauThuRa(maCauThuRa);
         }
 
@@ -71,6 +79,9 @@ public class ThayNguoiService implements IThayNguoiService {
                     .orElseThrow(
                             () -> new ResourceNotFoundException("Cau thu vao not found with id: " + updateThayNguoiDto.getMaCauThuVao())
                     );
+            if(Objects.equals(maCauThuVao.getId(), existingThayNguoi.getMaCauThuRa().getId())) {
+                throw new IllegalArgumentException("Cau thu ra and cau thu vao must be different");
+            }
             existingThayNguoi.setMaCauThuVao(maCauThuVao);
         }
 

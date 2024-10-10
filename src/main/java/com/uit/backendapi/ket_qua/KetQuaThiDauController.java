@@ -11,6 +11,7 @@ import com.uit.backendapi.ket_qua.dto.UpdateKetQuaThiDauDto;
 import com.uit.backendapi.thay_nguoi.ThayNguoi;
 import com.uit.backendapi.thay_nguoi.ThayNguoiService;
 import com.uit.backendapi.thay_nguoi.dto.CreateThayNguoiDto;
+import com.uit.backendapi.thay_nguoi.dto.ThayNguoiDto;
 import com.uit.backendapi.thay_nguoi.dto.UpdateThayNguoiDto;
 import com.uit.backendapi.the_phat.ThePhat;
 import com.uit.backendapi.the_phat.ThePhatService;
@@ -44,6 +45,10 @@ public class KetQuaThiDauController {
 
     private ThePhatDto toThePhatDto(ThePhat thePhat) {
         return modelMapper.map(thePhat, ThePhatDto.class);
+    }
+
+    private ThayNguoiDto toThayNguoiDto(ThayNguoi thayNguoi) {
+        return modelMapper.map(thayNguoi, ThayNguoiDto.class);
     }
 
     //-----------------------------Ket Qua----------------------------
@@ -130,23 +135,23 @@ public class KetQuaThiDauController {
 
     //-------------------------------Thay nguoi--------------------------------
     @GetMapping("/{id}/thay-nguoi")
-    public ResponseEntity<List<ThayNguoi>> getThayNguoiByKetQua(@PathVariable("id") Long id) {
+    public ResponseEntity<List<ThayNguoiDto>> getThayNguoiByKetQua(@PathVariable("id") Long id) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(thayNguoiService.getThayNguoiByKetQua(ketQuaThiDau));
+        return ResponseEntity.ok(thayNguoiService.getThayNguoiByKetQua(ketQuaThiDau).stream().map(this::toThayNguoiDto).toList());
     }
 
     @PostMapping("/{id}/thay-nguoi")
-    public ResponseEntity<ThayNguoi> createThayNguoi(@PathVariable("id") Long id, @RequestBody CreateThayNguoiDto createThayNguoiDto) {
+    public ResponseEntity<ThayNguoiDto> createThayNguoi(@PathVariable("id") Long id, @RequestBody CreateThayNguoiDto createThayNguoiDto) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(thayNguoiService.createThayNguoiByKetQua(ketQuaThiDau, createThayNguoiDto));
+        return ResponseEntity.ok(toThayNguoiDto(thayNguoiService.createThayNguoiByKetQua(ketQuaThiDau, createThayNguoiDto)));
     }
 
     @PutMapping("/{id}/thay-nguoi/{maThayNguoi}")
-    public ResponseEntity<ThayNguoi> updateThayNguoi(@PathVariable("id") Long id,
+    public ResponseEntity<ThayNguoiDto> updateThayNguoi(@PathVariable("id") Long id,
                                                      @PathVariable("maThayNguoi") Long maThayNguoi,
                                                      @RequestBody UpdateThayNguoiDto updateThayNguoiDto) {
         KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(thayNguoiService.updateThayNguoiByKetQuaAndId(ketQuaThiDau, maThayNguoi, updateThayNguoiDto));
+        return ResponseEntity.ok(toThayNguoiDto(thayNguoiService.updateThayNguoiByKetQuaAndId(ketQuaThiDau, maThayNguoi, updateThayNguoiDto)));
     }
 
     @DeleteMapping("/{id}/thay-nguoi/{maThayNguoi}")
