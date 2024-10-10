@@ -1,5 +1,6 @@
 package com.uit.backendapi.the_phat;
 
+import com.uit.backendapi.Utils;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.cau_thu.CauThuRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
@@ -47,7 +48,7 @@ public class ThePhatService implements IThePhatService {
     }
 
     private ThePhat updateExistingThePhat(ThePhat existingThePhat, UpdateThePhatDto updateThePhatDto) {
-        BeanUtils.copyProperties(updateThePhatDto, existingThePhat, "id", "maCauThu", "maKetQua");
+        Utils.copyNonNullProperties(updateThePhatDto, existingThePhat, "id", "maCauThu", "maKetQua");
 
         if (updateThePhatDto.getMaCauThu() != null) {
             CauThu cauThu = cauThuRepository.findById(updateThePhatDto.getMaCauThu())
