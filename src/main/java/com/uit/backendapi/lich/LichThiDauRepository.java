@@ -13,4 +13,7 @@ public interface LichThiDauRepository extends JpaRepository<LichThiDau, Long> {
 
     List<LichThiDau> findByNgayThiDauBetween(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd);
 
+    Integer countByMaDoiKhachAndMaMuaGiai(DoiBong maDoiKhach, MuaGiai maMuaGiai);
+
+    Integer countByMaDoiNhaAndMaMuaGiai(DoiBong maDoiNha, MuaGiai maMuaGiai);
 }
