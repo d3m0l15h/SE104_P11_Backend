@@ -71,6 +71,11 @@ public class MuaGiaiService implements IMuaGiaiService {
 
     @Override
     public void deleteMuaGiai(Long id) {
-        muaGiaiRepository.deleteById(id);
+        muaGiaiRepository.findById(id).ifPresentOrElse(
+                muaGiaiRepository::delete,
+                () -> {
+                    throw new ResourceNotFoundException("Mua giai not found with id: " + id);
+                }
+        );
     }
 }

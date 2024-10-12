@@ -43,8 +43,8 @@ public class MuaGiai {
     @OneToMany(mappedBy = "maMuaGiai")
     private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
 
-//    @OneToMany(mappedBy = "maMuaGiai")
-//    private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "maMuaGiai")
+    private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
 
     public MuaGiai(String nam) {
         this.nam = nam;
