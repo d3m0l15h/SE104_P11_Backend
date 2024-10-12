@@ -4,10 +4,14 @@ import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.lich.LichThiDau;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "DoiHinhRaSan", schema = "dbo")
 public class DoiHinhRaSan {
@@ -37,61 +41,5 @@ public class DoiHinhRaSan {
 
     @OneToMany(mappedBy = "maDoiHinh")
     private Set<ChiTietDoiHinh> chiTietDoiHinhs = new LinkedHashSet<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public DoiBong getMaDoi() {
-        return maDoi;
-    }
-
-    public void setMaDoi(DoiBong maDoi) {
-        this.maDoi = maDoi;
-    }
-
-    public LichThiDau getMaLichThiDau() {
-        return maLichThiDau;
-    }
-
-    public void setMaLichThiDau(LichThiDau maLichThiDau) {
-        this.maLichThiDau = maLichThiDau;
-    }
-
-    public String getDoiHinh() {
-        return doiHinh;
-    }
-
-    public void setDoiHinh(String doiHinh) {
-        this.doiHinh = doiHinh;
-    }
-
-    public CauThu getMaDoiTruong() {
-        return maDoiTruong;
-    }
-
-    public void setMaDoiTruong(CauThu maDoiTruong) {
-        this.maDoiTruong = maDoiTruong;
-    }
-
-    public CauThu getMaThuMon() {
-        return maThuMon;
-    }
-
-    public void setMaThuMon(CauThu maThuMon) {
-        this.maThuMon = maThuMon;
-    }
-
-    public Set<ChiTietDoiHinh> getChiTietDoiHinhs() {
-        return chiTietDoiHinhs;
-    }
-
-    public void setChiTietDoiHinhs(Set<ChiTietDoiHinh> chiTietDoiHinhs) {
-        this.chiTietDoiHinhs = chiTietDoiHinhs;
-    }
 
 }

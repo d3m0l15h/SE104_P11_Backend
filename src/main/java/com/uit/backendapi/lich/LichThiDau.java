@@ -1,6 +1,5 @@
 package com.uit.backendapi.lich;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import com.uit.backendapi.models.DoiHinhRaSan;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "LichThiDau", schema = "dbo")
 public class LichThiDau {
     @Id

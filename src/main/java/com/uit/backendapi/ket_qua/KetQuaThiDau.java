@@ -1,6 +1,5 @@
 package com.uit.backendapi.ket_qua;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uit.backendapi.ban_thang.BanThang;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.lich.LichThiDau;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "KetQuaThiDau", schema = "dbo", uniqueConstraints = {
         @UniqueConstraint(name = "KetQuaThiDau_pk", columnNames = {"MaLichThiDau"})
 })
@@ -39,7 +37,6 @@ public class KetQuaThiDau {
     private Integer soBanDoiNha;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @ColumnDefault("NULL")
     @JoinColumn(name = "CauThuXuatSac")
     private CauThu cauThuXuatSac;
 

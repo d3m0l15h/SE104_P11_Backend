@@ -2,9 +2,13 @@ package com.uit.backendapi.models;
 
 import com.uit.backendapi.cau_thu.CauThu;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "ChiTietDoiHinh", schema = "dbo")
 public class ChiTietDoiHinh {
@@ -32,53 +36,5 @@ public class ChiTietDoiHinh {
     @ColumnDefault("0")
     @Column(name = "LaDuBi", nullable = false)
     private Integer laDuBi;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public DoiHinhRaSan getMaDoiHinh() {
-        return maDoiHinh;
-    }
-
-    public void setMaDoiHinh(DoiHinhRaSan maDoiHinh) {
-        this.maDoiHinh = maDoiHinh;
-    }
-
-    public CauThu getMaCauThu() {
-        return maCauThu;
-    }
-
-    public void setMaCauThu(CauThu maCauThu) {
-        this.maCauThu = maCauThu;
-    }
-
-    public String getSoAo() {
-        return soAo;
-    }
-
-    public void setSoAo(String soAo) {
-        this.soAo = soAo;
-    }
-
-    public String getViTri() {
-        return viTri;
-    }
-
-    public void setViTri(String viTri) {
-        this.viTri = viTri;
-    }
-
-    public Integer getLaDuBi() {
-        return laDuBi;
-    }
-
-    public void setLaDuBi(Integer laDuBi) {
-        this.laDuBi = laDuBi;
-    }
 
 }

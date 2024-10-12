@@ -1,7 +1,6 @@
 package com.uit.backendapi.doi_bong.dto;
 
 import com.uit.backendapi.cau_thu.dto.CauThuSimpleDto;
-import com.uit.backendapi.mua_giai.MuaGiai;
 import com.uit.backendapi.mua_giai.dto.MuaGiaiSimpleDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +21,5 @@ public class DoiBongDto {
     private String aoChinhThuc;
     private String aoDuBi;
     private Set<CauThuSimpleDto> cauThus;
-    private Set<MuaGiaiSimpleDto> muaGiaiVoDichs;
+    private Set<MuaGiaiSimpleDto> muaGiais;
 }

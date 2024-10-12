@@ -12,7 +12,9 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "BangXepHang", schema = "dbo")
+@Table(name = "BangXepHang", schema = "dbo", uniqueConstraints = {
+        @UniqueConstraint(name = "BangXepHang_pk", columnNames = {"MaDoi", "MaMuaGiai"})
+})
 public class BangXepHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

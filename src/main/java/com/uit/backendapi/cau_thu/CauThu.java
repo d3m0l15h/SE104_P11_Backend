@@ -1,9 +1,11 @@
 package com.uit.backendapi.cau_thu;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uit.backendapi.ban_thang.BanThang;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
+import com.uit.backendapi.models.ChiTietDoiHinh;
+import com.uit.backendapi.models.DoiHinhRaSan;
+import com.uit.backendapi.thay_nguoi.ThayNguoi;
 import com.uit.backendapi.the_phat.ThePhat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,7 +21,6 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "CauThu", schema = "dbo")
 public class CauThu {
     @Id
@@ -67,14 +68,29 @@ public class CauThu {
     @Column(name = "CanNang", nullable = false)
     private Double canNang;
 
-//    @OneToMany(mappedBy = "maCauThu")
-//    private Set<BanThang> banThangs = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "cauThuXuatSac")
-//    private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "maCauThu")
-//    private Set<ThePhat> thePhats = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "maCauThu")
+    private Set<BanThang> banThangs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maCauThu")
+    private Set<ChiTietDoiHinh> chiTietDoiHinhs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maDoiTruong")
+    private Set<DoiHinhRaSan> doiHinhRaSans_DoiTruong = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maThuMon")
+    private Set<DoiHinhRaSan> doiHinhRaSans_ThuMon = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "cauThuXuatSac")
+    private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maCauThuVao")
+    private Set<ThayNguoi> thayNguois_Vao = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maCauThuRa")
+    private Set<ThayNguoi> thayNguois_Ra = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maCauThu")
+    private Set<ThePhat> thePhats = new LinkedHashSet<>();
 
     public CauThu(String tenCauThu, LocalDate ngaySinh, String loaiCauThu, DoiBong maDoi, Integer soAo, String viTri, String noiSinh, String quocTich, String tieuSu, Double chieuCao, Double canNang) {
         this.tenCauThu = tenCauThu;
