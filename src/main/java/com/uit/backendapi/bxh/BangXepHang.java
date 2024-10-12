@@ -4,13 +4,13 @@ import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDate;
-
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "BangXepHang", schema = "dbo")
 public class BangXepHang {
@@ -18,9 +18,6 @@ public class BangXepHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaBangXepHang", nullable = false)
     private Integer id;
-
-    @Column(name = "NgayXepHang", nullable = false)
-    private LocalDate ngayXepHang;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaDoi", nullable = false)
@@ -55,4 +52,15 @@ public class BangXepHang {
     @Column(name = "SoBanThua")
     private Integer soBanThua;
 
+    public BangXepHang( DoiBong maDoi, Integer soTranThang, Integer soTranHoa, Integer soTranThua, Integer hieuSo, MuaGiai maMuaGiai, Integer diem, Integer soBanThang, Integer soBanThua) {
+        this.maDoi = maDoi;
+        this.soTranThang = soTranThang;
+        this.soTranHoa = soTranHoa;
+        this.soTranThua = soTranThua;
+        this.hieuSo = hieuSo;
+        this.maMuaGiai = maMuaGiai;
+        this.diem = diem;
+        this.soBanThang = soBanThang;
+        this.soBanThua = soBanThua;
+    }
 }
