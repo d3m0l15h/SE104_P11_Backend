@@ -10,8 +10,8 @@ public class BangXepHangMuaGiaiDto {
     private Integer soTranThang;
     private Integer soTranHoa;
     private Integer soTranThua;
-    private Integer hieuSo;
-    private Integer diem;
     private Integer soBanThang;
     private Integer soBanThua;
+    private Integer hieuSo;
+    private Integer diem;
 }
