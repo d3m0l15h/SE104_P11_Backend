@@ -8,7 +8,7 @@ import java.util.List;
 public interface IMuaGiaiService {
     List<MuaGiai> getAllMuaGiai();
 
-    MuaGiai getMuaGiaiById(Long id);
+    MuaGiai getMuaGiaiByNamOrId(String namOrId);
 
     MuaGiai createMuaGiai(CreateMuaGiaiDto createMuaGiaiDto);
 

@@ -24,9 +24,9 @@ public class MuaGiaiService implements IMuaGiaiService {
     }
 
     @Override
-    public MuaGiai getMuaGiaiById(Long id) {
-        return muaGiaiRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Mua giai not found with id: " + id)
+    public MuaGiai getMuaGiaiByNamOrId(String namOrId) {
+        return muaGiaiRepository.findByNamOrId(namOrId, Integer.valueOf(namOrId)).orElseThrow(() ->
+                new ResourceNotFoundException("Mua giai not found with id: " + namOrId)
         );
     }
 

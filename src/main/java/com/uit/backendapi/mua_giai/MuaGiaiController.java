@@ -6,7 +6,6 @@ import com.uit.backendapi.mua_giai.dto.MuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.UpdateMuaGiaiDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +27,9 @@ public class MuaGiaiController {
         return muaGiaiService.getAllMuaGiai().stream().map(this::toDto).toList();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MuaGiaiDto> getMuaGiaiById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().body(toDto(muaGiaiService.getMuaGiaiById(id)));
+    @GetMapping("/{namOrId}")
+    public ResponseEntity<MuaGiaiDto> getMuaGiaiByNamOrId(@PathVariable("namOrId") String namOrId) {
+        return ResponseEntity.ok().body(toDto(muaGiaiService.getMuaGiaiByNamOrId(namOrId)));
     }
 
     @PostMapping
