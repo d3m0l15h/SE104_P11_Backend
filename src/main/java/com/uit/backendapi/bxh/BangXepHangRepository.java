@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface BangXepHangRepository extends JpaRepository<BangXepHang, Long> {
     Optional<BangXepHang> findByMaDoiAndMaMuaGiai(DoiBong maDoi, MuaGiai maMuaGiai);
-    List<BangXepHang> findByMaMuaGiai(MuaGiai maMuaGiai);
+    List<BangXepHang> findByMaMuaGiaiOrderByDiemDescSoTranThangDescHieuSoDescSoBanThangDesc(MuaGiai maMuaGiai);
 }

@@ -1,6 +1,8 @@
 package com.uit.backendapi.ket_qua;
 
 import com.uit.backendapi.Utils;
+import com.uit.backendapi.bxh.BangXepHang;
+import com.uit.backendapi.bxh.BangXepHangService;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.cau_thu.CauThuRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
@@ -23,6 +25,8 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
     private final KetQuaThiDauRepository ketQuaThiDauRepository;
     private final LichThiDauRepository lichThiDauRepository;
     private final CauThuRepository cauThuRepository;
+    private final BangXepHangService bangXepHang;
+    private final BangXepHangService bangXepHangService;
 
     @Override
     public List<KetQuaThiDau> getAllKetQuaThiDau() {
@@ -55,7 +59,14 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
             );
             ketQuaThiDau.setCauThuXuatSac(cauThuXuatSac);
         }
-        
+
+        bangXepHangService.updateBangXepHang(
+                lichThiDau.getMaDoiNha(),
+                lichThiDau.getMaDoiKhach(),
+                lichThiDau.getMaMuaGiai(),
+                ketQuaThiDau.getSoBanDoiNha(),
+                ketQuaThiDau.getSoBanDoiKhach());
+
 
         return ketQuaThiDauRepository.save(ketQuaThiDau);
     }
@@ -85,6 +96,14 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
             );
             existingKetQuaThiDau.setCauThuXuatSac(cauThuXuatSac);
         }
+
+        bangXepHangService.updateBangXepHang(
+                existingKetQuaThiDau.getMaLichThiDau().getMaDoiNha(),
+                existingKetQuaThiDau.getMaLichThiDau().getMaDoiKhach(),
+                existingKetQuaThiDau.getMaLichThiDau().getMaMuaGiai(),
+                existingKetQuaThiDau.getSoBanDoiNha(),
+                existingKetQuaThiDau.getSoBanDoiKhach()
+        );
 
         return existingKetQuaThiDau;
     }

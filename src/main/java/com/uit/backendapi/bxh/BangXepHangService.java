@@ -27,12 +27,12 @@ public class BangXepHangService implements IBangXepHangService {
                 () -> new ResourceNotFoundException("Mua giai not found with id: " + maMuaGiai)
         );
 
-        return bangXepHangRepository.findByMaMuaGiai(muaGiai);
+        return bangXepHangRepository.findByMaMuaGiaiOrderByDiemDescSoTranThangDescHieuSoDescSoBanThangDesc(muaGiai);
     }
 
     @Override
     public List<BangXepHang> getBangXepHangByMuaGiai(MuaGiai muaGiai) {
-        return bangXepHangRepository.findByMaMuaGiai(muaGiai);
+        return bangXepHangRepository.findByMaMuaGiaiOrderByDiemDescSoTranThangDescHieuSoDescSoBanThangDesc(muaGiai);
     }
 
 
@@ -120,6 +120,48 @@ public class BangXepHangService implements IBangXepHangService {
         }
 
         return existingBangXepHang;
+    }
+
+    @Override
+    public void updateBangXepHang(DoiBong doiNha, DoiBong doiKhach, MuaGiai muaGiai, int soBanThangDoiNha, int soBanThangDoiKhach){
+        BangXepHang bxhDoiNha = getBangXepHangByMaDoiAndMuaGiai(doiNha, muaGiai);
+        BangXepHang bxhDoiKhach = getBangXepHangByMaDoiAndMuaGiai(doiKhach, muaGiai);
+
+        if(soBanThangDoiNha > soBanThangDoiKhach) {
+            //Diem doi nha
+            bxhDoiNha.setDiem(bxhDoiNha.getDiem() + 3);
+            //So tran thang doi nha
+            bxhDoiNha.setSoTranThang(bxhDoiNha.getSoTranThang() + 1);
+            //So tran thua doi khach
+            bxhDoiKhach.setSoTranThua(bxhDoiKhach.getSoTranThua() + 1);
+        } else if(soBanThangDoiNha == soBanThangDoiKhach) {
+            //Diem
+            bxhDoiNha.setDiem(bxhDoiNha.getDiem() + 1);
+            bxhDoiKhach.setDiem(bxhDoiKhach.getDiem() + 1);
+            //So tran hoa
+            bxhDoiNha.setSoTranHoa(bxhDoiNha.getSoTranHoa() + 1);
+            bxhDoiKhach.setSoTranHoa(bxhDoiKhach.getSoTranHoa() + 1);
+        } else {
+            //Diem doi khach
+            bxhDoiKhach.setDiem(bxhDoiKhach.getDiem() + 3);
+            //So tran thang doi khach
+            bxhDoiKhach.setSoTranThang(bxhDoiKhach.getSoTranThang() + 1);
+            //So tran thua doi nha
+            bxhDoiNha.setSoTranThua(bxhDoiNha.getSoTranThua() + 1);
+        }
+        //So ban thang va so ban thua
+        bxhDoiNha.setSoBanThang(bxhDoiNha.getSoBanThang() + soBanThangDoiNha);
+        bxhDoiNha.setSoBanThua(bxhDoiNha.getSoBanThua() + soBanThangDoiKhach);
+
+        bxhDoiKhach.setSoBanThang(bxhDoiKhach.getSoBanThang() + soBanThangDoiKhach);
+        bxhDoiKhach.setSoBanThua(bxhDoiKhach.getSoBanThua() + soBanThangDoiNha);
+
+        //Hieu so
+        bxhDoiNha.setHieuSo(bxhDoiNha.getSoBanThang() - bxhDoiNha.getSoBanThua());
+        bxhDoiKhach.setHieuSo(bxhDoiKhach.getSoBanThang() - bxhDoiKhach.getSoBanThua());
+
+        bangXepHangRepository.save(bxhDoiNha);
+        bangXepHangRepository.save(bxhDoiKhach);
     }
 
     @Override
