@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class BangXepHangService implements IBangXepHangService{
+public class BangXepHangService implements IBangXepHangService {
     private final BangXepHangRepository bangXepHangRepository;
     private final DoiBongRepository doiBongRepository;
     private final MuaGiaiRepository muaGiaiRepository;
@@ -38,24 +38,16 @@ public class BangXepHangService implements IBangXepHangService{
 
     @Override
     public BangXepHang getBangXepHangByMaDoiAndMuaGiai(Long maDoi, Long maMuaGiai) {
-        DoiBong doiBong = doiBongRepository.findById(maDoi).orElseThrow(
-                () -> new ResourceNotFoundException("Doi bong not found with id: " + maDoi)
-        );
+        DoiBong doiBong = doiBongRepository.findById(maDoi).orElse(null);
 
-        MuaGiai muaGiai = muaGiaiRepository.findById(maMuaGiai).orElseThrow(
-                () -> new ResourceNotFoundException("Mua giai not found with id: " + maMuaGiai)
-        );
+        MuaGiai muaGiai = muaGiaiRepository.findById(maMuaGiai).orElse(null);
 
-        return bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiBong, muaGiai).orElseThrow(
-                () -> new ResourceNotFoundException("Bang xep hang not found with ma doi: " + maDoi + " and ma mua giai: " + maMuaGiai)
-        );
+        return bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiBong, muaGiai).orElse(null);
     }
 
     @Override
     public BangXepHang getBangXepHangByMaDoiAndMuaGiai(DoiBong doiBong, MuaGiai muaGiai) {
-        return bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiBong, muaGiai).orElseThrow(
-                () -> new ResourceNotFoundException("Bang xep hang not found with ma doi: " + doiBong.getId() + " and ma mua giai: " + muaGiai.getId())
-        );
+        return bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiBong, muaGiai).orElse(null);
     }
 
     @Override
@@ -70,21 +62,21 @@ public class BangXepHangService implements IBangXepHangService{
 
         BangXepHang bangXepHang = new BangXepHang(
                 maDoiBong,
-                Objects.requireNonNullElse(createBxhDto.getSoTranThang(),0),
-                Objects.requireNonNullElse(createBxhDto.getSoTranHoa(),0),
-                Objects.requireNonNullElse(createBxhDto.getSoTranThua(),0),
-                Objects.requireNonNullElse(createBxhDto.getHieuSo(),0),
+                Objects.requireNonNullElse(createBxhDto.getSoTranThang(), 0),
+                Objects.requireNonNullElse(createBxhDto.getSoTranHoa(), 0),
+                Objects.requireNonNullElse(createBxhDto.getSoTranThua(), 0),
+                Objects.requireNonNullElse(createBxhDto.getHieuSo(), 0),
                 maMuaGiai,
-                Objects.requireNonNullElse(createBxhDto.getDiem(),0),
-                Objects.requireNonNullElse(createBxhDto.getSoBanThang(),0),
-                Objects.requireNonNullElse(createBxhDto.getSoBanThua(),0)
+                Objects.requireNonNullElse(createBxhDto.getDiem(), 0),
+                Objects.requireNonNullElse(createBxhDto.getSoBanThang(), 0),
+                Objects.requireNonNullElse(createBxhDto.getSoBanThua(), 0)
         );
 
         return bangXepHangRepository.save(bangXepHang);
     }
 
     @Override
-    public void createBangXepHang(DoiBong doiBong, MuaGiai muaGiai){
+    public void createBangXepHang(DoiBong doiBong, MuaGiai muaGiai) {
         BangXepHang bangXepHang = new BangXepHang(
                 doiBong,
                 0,
@@ -106,21 +98,21 @@ public class BangXepHangService implements IBangXepHangService{
                 .map(existingBangXepHang -> updateExistingBangXepHang(existingBangXepHang, updateBxhDto))
                 .map(bangXepHangRepository::save)
                 .orElseThrow(
-                () -> new ResourceNotFoundException("Bang xep hang not found with id: " + id)
-        );
+                        () -> new ResourceNotFoundException("Bang xep hang not found with id: " + id)
+                );
     }
 
     private BangXepHang updateExistingBangXepHang(BangXepHang existingBangXepHang, UpdateBxhDto updateBxhDto) {
         Utils.copyNonNullProperties(updateBxhDto, existingBangXepHang, "id", "maDoi", "maMuaGiai");
 
-        if(updateBxhDto.getMaDoi() != null) {
+        if (updateBxhDto.getMaDoi() != null) {
             DoiBong maDoiBong = doiBongRepository.findById(updateBxhDto.getMaDoi()).orElseThrow(
                     () -> new ResourceNotFoundException("Doi bong not found with id: " + updateBxhDto.getMaDoi())
             );
             existingBangXepHang.setMaDoi(maDoiBong);
         }
 
-        if(updateBxhDto.getMaMuaGiai() != null) {
+        if (updateBxhDto.getMaMuaGiai() != null) {
             MuaGiai maMuaGiai = muaGiaiRepository.findById(updateBxhDto.getMaMuaGiai()).orElseThrow(
                     () -> new ResourceNotFoundException("Mua giai not found with id: " + updateBxhDto.getMaMuaGiai())
             );
