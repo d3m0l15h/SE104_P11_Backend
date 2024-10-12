@@ -9,7 +9,7 @@ import com.uit.backendapi.mua_giai.MuaGiai;
 import java.util.List;
 
 public interface IBangXepHangService {
-    List<BangXepHang> getBangXepHangByMuaGiai(Long muaGiai);
+    List<BangXepHang> getBangXepHangByMuaGiai(String namOrId);
     List<BangXepHang> getBangXepHangByMuaGiai(MuaGiai muaGiai);
     BangXepHang getBangXepHangByMaDoiAndMuaGiai(Long maDoi, Long muaGiai);
     BangXepHang getBangXepHangByMaDoiAndMuaGiai(DoiBong doiBong, MuaGiai muaGiai);
