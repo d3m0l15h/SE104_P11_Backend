@@ -57,8 +57,8 @@ public class LichThiDau {
     @OneToMany(mappedBy = "maLichThiDau")
     private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "maLichThiDau")
-    private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "maLichThiDau")
+    private KetQuaThiDau ketQuaThiDau;
 
     public LichThiDau( String vongThiDau, LocalDate ngayThiDau, LocalTime gioThiDau, String sanThiDau, DoiBong maDoiNha, DoiBong maDoiKhach, MuaGiai maMuaGiai) {
         this.vongThiDau = vongThiDau;
