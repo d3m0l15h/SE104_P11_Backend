@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "LichThiDau", schema = "dbo")
+@Table(name = "LichThiDau", schema = "QuanLyGiaiVoDichBongDa")
 public class LichThiDau {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

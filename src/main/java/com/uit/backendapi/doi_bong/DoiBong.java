@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Nationalized;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,48 +17,42 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "DoiBong", schema = "dbo")
+@Table(name = "DoiBong", schema = "QuanLyGiaiVoDichBongDa")
 public class DoiBong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaDoi", nullable = false)
     private Integer id;
 
-    @Nationalized
-    @Column(name = "TenDoi", nullable = false, length = 100)
-    private String tenDoi;
+    @Column(name = "Logo", nullable = false, length = 500)
+    private String logo;
 
-    @Nationalized
-    @Column(name = "TenSanNha", nullable = false, length = 100)
-    private String tenSanNha;
-
-    @Nationalized
-    @Column(name = "DiaChiSanNha", nullable = false, length = 200)
-    private String diaChiSanNha;
-
-    @Nationalized
-    @Column(name = "DienThoai", nullable = false, length = 20)
-    private String dienThoai;
-
-    @Nationalized
-    @Column(name = "Email", nullable = false, length = 100)
-    private String email;
-
-    @Nationalized
-    @Column(name = "ToChucQuanLy", nullable = false, length = 100)
-    private String toChucQuanLy;
-
-    @Nationalized
-    @Column(name = "ThanhPhoTrucThuoc", nullable = false, length = 100)
-    private String thanhPhoTrucThuoc;
-
-    @Nationalized
     @Column(name = "AoChinhThuc", nullable = false, length = 500)
     private String aoChinhThuc;
 
-    @Nationalized
     @Column(name = "AoDuBi", nullable = false, length = 500)
     private String aoDuBi;
+
+    @Column(name = "DiaChiSanNha", nullable = false, length = 200)
+    private String diaChiSanNha;
+
+    @Column(name = "DienThoai", nullable = false, length = 20)
+    private String dienThoai;
+
+    @Column(name = "Email", nullable = false, length = 100)
+    private String email;
+
+    @Column(name = "TenDoi", nullable = false, length = 100)
+    private String tenDoi;
+
+    @Column(name = "TenSanNha", nullable = false, length = 100)
+    private String tenSanNha;
+
+    @Column(name = "ThanhPhoTrucThuoc", nullable = false, length = 100)
+    private String thanhPhoTrucThuoc;
+
+    @Column(name = "ToChucQuanLy", nullable = false, length = 100)
+    private String toChucQuanLy;
 
     @OneToMany(mappedBy = "maDoi")
     private Set<BangXepHang> bangXepHangs = new LinkedHashSet<>();
@@ -70,11 +63,11 @@ public class DoiBong {
     @OneToMany(mappedBy = "maDoi")
     private Set<DoiHinhRaSan> doiHinhRaSans = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "maDoiNha")
-    private Set<LichThiDau> lichThiDaus_DoiNha = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "maDoiKhach")
     private Set<LichThiDau> lichThiDaus_DoiKhach = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maDoiNha")
+    private Set<LichThiDau> lichThiDaus_DoiNha = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "doiVoDich")
     private Set<MuaGiai> muaGiais = new LinkedHashSet<>();

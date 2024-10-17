@@ -21,52 +21,46 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "CauThu", schema = "dbo")
+@Table(name = "CauThu", schema = "QuanLyGiaiVoDichBongDa")
 public class CauThu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaCauThu", nullable = false)
     private Integer id;
 
-    @Nationalized
-    @Column(name = "TenCauThu", nullable = false, length = 100)
-    private String tenCauThu;
-
-    @Column(name = "NgaySinh", nullable = false)
-    private LocalDate ngaySinh;
-
-    @Nationalized
-    @Column(name = "LoaiCauThu", nullable = false, length = 50)
-    private String loaiCauThu;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "MaDoi", nullable = false)
-    private DoiBong maDoi;
-
-    @Column(name = "SoAo", nullable = false)
-    private Integer soAo;
-
-    @Nationalized
-    @Column(name = "ViTri", nullable = false, length = 50)
-    private String viTri;
-
-    @Nationalized
-    @Column(name = "NoiSinh", nullable = false, length = 100)
-    private String noiSinh;
-
-    @Nationalized
-    @Column(name = "QuocTich", nullable = false, length = 100)
-    private String quocTich;
-
-    @Nationalized
-    @Column(name = "TieuSu", length = 500)
-    private String tieuSu;
+    @Column(name = "CanNang", nullable = false)
+    private Double canNang;
 
     @Column(name = "ChieuCao", nullable = false)
     private Double chieuCao;
 
-    @Column(name = "CanNang", nullable = false)
-    private Double canNang;
+    @Column(name = "LoaiCauThu", nullable = false, length = 50)
+    private String loaiCauThu;
+
+    @Column(name = "NgaySinh", nullable = false)
+    private LocalDate ngaySinh;
+
+    @Column(name = "NoiSinh", nullable = false, length = 100)
+    private String noiSinh;
+
+    @Column(name = "QuocTich", nullable = false, length = 100)
+    private String quocTich;
+
+    @Column(name = "SoAo", nullable = false)
+    private Integer soAo;
+
+    @Column(name = "TenCauThu", nullable = false, length = 100)
+    private String tenCauThu;
+
+    @Column(name = "TieuSu", length = 500)
+    private String tieuSu;
+
+    @Column(name = "ViTri", nullable = false, length = 50)
+    private String viTri;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MaDoi", nullable = false)
+    private DoiBong maDoi;
 
     @OneToMany(mappedBy = "maCauThu")
     private Set<BanThang> banThangs = new LinkedHashSet<>();
@@ -83,11 +77,11 @@ public class CauThu {
     @OneToMany(mappedBy = "cauThuXuatSac")
     private Set<KetQuaThiDau> ketQuaThiDaus = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "maCauThuVao")
-    private Set<ThayNguoi> thayNguois_Vao = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "maCauThuRa")
     private Set<ThayNguoi> thayNguois_Ra = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "maCauThuVao")
+    private Set<ThayNguoi> thayNguois_Vao = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "maCauThu")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();

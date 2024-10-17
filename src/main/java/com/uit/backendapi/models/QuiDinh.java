@@ -1,10 +1,14 @@
 package com.uit.backendapi.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+@Setter
+@Getter
 @Entity
-@Table(name = "QuiDinh", schema = "dbo")
+@Table(name = "QuiDinh", schema = "QuanLyGiaiVoDichBongDa")
 public class QuiDinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,29 +22,5 @@ public class QuiDinh {
     @Nationalized
     @Column(name = "NoiDung", nullable = false, length = 1000)
     private String noiDung;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTenQuiDinh() {
-        return tenQuiDinh;
-    }
-
-    public void setTenQuiDinh(String tenQuiDinh) {
-        this.tenQuiDinh = tenQuiDinh;
-    }
-
-    public String getNoiDung() {
-        return noiDung;
-    }
-
-    public void setNoiDung(String noiDung) {
-        this.noiDung = noiDung;
-    }
 
 }

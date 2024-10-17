@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Nationalized;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "MuaGiai", schema = "dbo", uniqueConstraints = {
+@Table(name = "MuaGiai", schema = "QuanLyGiaiVoDichBongDa", uniqueConstraints = {
         @UniqueConstraint(name = "UQ_Nam", columnNames = {"Nam"})
 })
 public class MuaGiai {
@@ -26,7 +25,6 @@ public class MuaGiai {
     @Column(name = "MaMuaGiai", nullable = false)
     private Integer id;
 
-    @Nationalized
     @Column(name = "Nam", nullable = false, length = 50)
     private String nam;
 

@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "KetQuaThiDau", schema = "dbo", uniqueConstraints = {
+@Table(name = "KetQuaThiDau", schema = "QuanLyGiaiVoDichBongDa", uniqueConstraints = {
         @UniqueConstraint(name = "KetQuaThiDau_pk", columnNames = {"MaLichThiDau"})
 })
 public class KetQuaThiDau {
