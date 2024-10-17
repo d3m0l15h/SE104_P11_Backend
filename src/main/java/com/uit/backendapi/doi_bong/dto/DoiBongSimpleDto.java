@@ -6,4 +6,5 @@ import lombok.Data;
 public class DoiBongSimpleDto {
     private Long id;
     private String tenDoi;
+    private String logo;
 }

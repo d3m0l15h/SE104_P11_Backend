@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class DoiBongLichThiDauDto {
     private Long id;
     private String tenDoi;
+    private String logo;
     private String aoChinhThuc;
     private String aoDuBi;
 }

@@ -12,6 +12,7 @@ public class CreateDoiBongDto {
     private String email;
     private String toChucQuanLy;
     private String thanhPhoTrucThuoc;
+    private MultipartFile logo;
     private MultipartFile aoChinhThuc;
     private MultipartFile aoDuBi;
 }

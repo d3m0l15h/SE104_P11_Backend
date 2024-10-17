@@ -18,6 +18,7 @@ public class DoiBongDto {
     private String email;
     private String toChucQuanLy;
     private String thanhPhoTrucThuoc;
+    private String logo;
     private String aoChinhThuc;
     private String aoDuBi;
     private Set<CauThuSimpleDto> cauThus;
