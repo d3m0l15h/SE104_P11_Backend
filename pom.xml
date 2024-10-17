@@ -90,7 +90,12 @@
             <artifactId>spring-beans</artifactId>
             <version>6.1.13</version>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
