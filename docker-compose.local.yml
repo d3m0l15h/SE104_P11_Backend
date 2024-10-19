@@ -1,0 +1,34 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysqlserver
+    hostname: mysql
+    environment:
+      MYSQL_DATABASE: QuanLyGiaiVoDichBongDa
+      MYSQL_ROOT_PASSWORD: root@123
+    volumes:
+      - ../db/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root@123
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+  api:
+    image: d3m0l15h/backend-api:latest
+    container_name: api
+    environment:
+      MYSQL_URL: jdbc:mysql://mysql:3306/QuanLyGiaiVoDichBongDa?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
+    volumes:
+      - .env:/app/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
