@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<scope>annotationProcessor</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>io.github.cdimascio</groupId>
 			<artifactId>dotenv-java</artifactId>
-			<version>2.2.4</version>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.cloudinary</groupId>
@@ -102,6 +102,19 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.3</version> <!-- Update to the latest version -->
+				<configuration>
+					<from>
+						<image>openjdk:21-jdk-slim</image>
+					</from>
+					<to>
+						<image>d3m0l15h/backend-api</image>
+					</to>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

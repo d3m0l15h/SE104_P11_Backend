@@ -1,18 +1,4 @@
 services:
-#  mssql:
-#    image: mcr.microsoft.com/mssql/server:2022-latest
-#    container_name: mssqlserver         # tên container
-#    hostname: mssql
-#    environment:
-#      MSSQL_SA_PASSWORD: root@123          #Thiết lập password
-#      ACCEPT_EULA: Y
-#      # Express:
-#
-#    volumes:
-#      - ../db/data:/var/opt/mssql/data # thư mục lưu DB
-#      - ../db/bk:/var/opt/mssql/backup      # thư  mục chứa file backup
-#    ports:
-#      - "1433:1433"                     # cổng kết nối
   mysql:
     image: mysql:8.0
     container_name: mysqlserver
@@ -33,5 +19,16 @@ services:
       MYSQL_ROOT_PASSWORD: root@123
     ports:
       - "8081:80"
+    depends_on:
+      - mysql
+  api:
+    image: d3m0l15h/backend-api:latest
+    container_name: api
+    environment:
+      MYSQL_URL: jdbc:mysql://mysql:3306/QuanLyGiaiVoDichBongDa?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
+    volumes:
+      - .env:/app/.env
+    ports:
+      - "8080:8080"
     depends_on:
       - mysql
