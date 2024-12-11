@@ -10,6 +10,9 @@ import com.uit.backendapi.ket_qua.dto.UpdateKetQuaThiDauDto;
 import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.lich.LichThiDauRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +27,11 @@ public class KetQuaThiDauService implements IKetQuaThiDauService {
     private final BangXepHangService bangXepHangService;
 
     @Override
-    public List<KetQuaThiDau> getAllKetQuaThiDau() {
-        return ketQuaThiDauRepository.findAll();
+    public Page<KetQuaThiDau> getAllKetQuaThiDau(Pageable pageable) {
+        List<KetQuaThiDau> ketQuaThiDaus = ketQuaThiDauRepository.findAll();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), ketQuaThiDaus.size());
+        return new PageImpl<>(ketQuaThiDaus.subList(start, end), pageable, ketQuaThiDaus.size());
     }
 
     @Override
