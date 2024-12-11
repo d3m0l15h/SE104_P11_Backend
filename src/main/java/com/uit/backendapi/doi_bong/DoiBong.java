@@ -70,7 +70,7 @@ public class DoiBong {
     private Set<LichThiDau> lichThiDaus_DoiNha = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "doiVoDich")
-    private Set<MuaGiai> muaGiais = new LinkedHashSet<>();
+    private Set<MuaGiai> muaGiaisVoDich = new LinkedHashSet<>();
 
     public DoiBong(String tenDoi, String tenSanNha, String diaChiSanNha, String dienThoai, String email, String toChucQuanLy, String thanhPhoTrucThuoc, String aoChinhThuc, String aoDuBi) {
         this.tenDoi = tenDoi;

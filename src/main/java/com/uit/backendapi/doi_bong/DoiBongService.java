@@ -4,15 +4,20 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.uit.backendapi.Utils;
 import com.uit.backendapi.doi_bong.dto.CreateDoiBongDto;
+import com.uit.backendapi.doi_bong.dto.FilterDoiBongDto;
 import com.uit.backendapi.doi_bong.dto.UpdateDoiBongDto;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,8 +26,11 @@ public class DoiBongService implements IDoiBongService {
     private final Cloudinary cloudinary;
 
     @Override
-    public List<DoiBong> getAllDoiBong() {
-        return doiBongRepository.findAll();
+    public Page<DoiBong> getAllDoiBong(Pageable pageable) {
+        List<DoiBong> doiBongs = doiBongRepository.findAll();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), doiBongs.size());
+        return new PageImpl<>(doiBongs.subList(start, end), pageable, doiBongs.size());
     }
 
     @Override
@@ -30,6 +38,29 @@ public class DoiBongService implements IDoiBongService {
         return doiBongRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Doi bong not found")
         );
+    }
+
+    @Override
+    public Page<DoiBong> filter(FilterDoiBongDto filterDoiBongDto, Pageable pageable) {
+        List<DoiBong> doiBongs = doiBongRepository.findAll().stream()
+                .filter(doiBong -> filterDoiBongDto.getTenDoi() == null
+                        || doiBong.getTenDoi().equals(filterDoiBongDto.getTenDoi()))
+                .filter(doiBong -> filterDoiBongDto.getTenSanNha() == null
+                        || doiBong.getTenSanNha().equals(filterDoiBongDto.getTenSanNha()))
+                .filter(doiBong -> filterDoiBongDto.getDiaChiSanNha() == null
+                        || doiBong.getDiaChiSanNha().equals(filterDoiBongDto.getDiaChiSanNha()))
+                .filter(doiBong -> filterDoiBongDto.getDienThoai() == null
+                        || doiBong.getDienThoai().equals(filterDoiBongDto.getDienThoai()))
+                .filter(doiBong -> filterDoiBongDto.getEmail() == null
+                        || doiBong.getEmail().equals(filterDoiBongDto.getEmail()))
+                .filter(doiBong -> filterDoiBongDto.getToChucQuanLy() == null
+                        || doiBong.getToChucQuanLy().equals(filterDoiBongDto.getToChucQuanLy()))
+                .filter(doiBong -> filterDoiBongDto.getThanhPhoTrucThuoc() == null
+                        || doiBong.getThanhPhoTrucThuoc().equals(filterDoiBongDto.getThanhPhoTrucThuoc()))
+                .toList();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), doiBongs.size());
+        return new PageImpl<>(doiBongs.subList(start, end), pageable, doiBongs.size());
     }
 
     @Override

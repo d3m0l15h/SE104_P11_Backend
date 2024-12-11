@@ -22,5 +22,5 @@ public class DoiBongDto {
     private String aoChinhThuc;
     private String aoDuBi;
     private Set<CauThuSimpleDto> cauThus;
-    private Set<MuaGiaiSimpleDto> muaGiais;
+    private Set<MuaGiaiSimpleDto> muaGiaisVoDich;
 }
