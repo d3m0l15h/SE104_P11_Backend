@@ -5,11 +5,17 @@ import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.mua_giai.dto.CreateMuaGiaiDto;
+import com.uit.backendapi.mua_giai.dto.FilterMuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.UpdateMuaGiaiDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,15 +25,26 @@ public class MuaGiaiService implements IMuaGiaiService {
     private final DoiBongRepository doiBongRepository;
 
     @Override
-    public List<MuaGiai> getAllMuaGiai() {
-        return muaGiaiRepository.findAll();
+    public Page<MuaGiai> getAllMuaGiai(Pageable pageable) {
+        List<MuaGiai> muaGiais = muaGiaiRepository.findAll();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), muaGiais.size());
+        return new PageImpl<>(muaGiais.subList(start, end), pageable, muaGiais.size());
     }
 
     @Override
-    public MuaGiai getMuaGiaiByNamOrId(String namOrId) {
-        return muaGiaiRepository.findByNamOrId(namOrId, Integer.valueOf(namOrId)).orElseThrow(() ->
-                new ResourceNotFoundException("Mua giai not found with id: " + namOrId)
-        );
+    public Page<MuaGiai> filter(FilterMuaGiaiDto filterMuaGiaiDto, Pageable pageable) {
+        List<MuaGiai> filteredList = muaGiaiRepository.findAll().stream()
+                .filter(muaGiai -> filterMuaGiaiDto.getNam() == null
+                        || muaGiai.getNam().equals(filterMuaGiaiDto.getNam())
+                )
+                .filter(muaGiai -> filterMuaGiaiDto.getMaDoiVoDich() == null
+                        || muaGiai.getDoiVoDich().getId().equals(filterMuaGiaiDto.getMaDoiVoDich())
+                )
+                .toList();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), filteredList.size());
+        return new PageImpl<>(filteredList.subList(start, end), pageable, filteredList.size());
     }
 
     @Override

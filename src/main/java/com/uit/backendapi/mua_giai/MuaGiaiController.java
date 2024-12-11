@@ -2,15 +2,23 @@ package com.uit.backendapi.mua_giai;
 
 
 import com.uit.backendapi.mua_giai.dto.CreateMuaGiaiDto;
+import com.uit.backendapi.mua_giai.dto.FilterMuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.MuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.UpdateMuaGiaiDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Mua giai")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/mua-giai")
@@ -23,26 +31,46 @@ public class MuaGiaiController {
     }
 
     @GetMapping
-    public List<MuaGiaiDto> getAllMuaGiai() {
-        return muaGiaiService.getAllMuaGiai().stream().map(this::toDto).toList();
+    @Operation(summary = "Get all mua giai")
+    public Page<MuaGiaiDto> getAllMuaGiai(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+        Pageable pageable = PageRequest.of(page,
+                size,
+                Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return  muaGiaiService.getAllMuaGiai(pageable).map(this::toDto);
     }
 
-    @GetMapping("/{namOrId}")
-    public ResponseEntity<MuaGiaiDto> getMuaGiaiByNamOrId(@PathVariable("namOrId") String namOrId) {
-        return ResponseEntity.ok().body(toDto(muaGiaiService.getMuaGiaiByNamOrId(namOrId)));
+
+    @PostMapping("/filter")
+    @Operation(summary = "Filter mua giai with pagination")
+    public ResponseEntity<Page<MuaGiaiDto>> filter(
+            @RequestBody FilterMuaGiaiDto filterMuaGiaiDto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+        Pageable pageable = PageRequest.of(page,
+                size,
+                Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        Page<MuaGiai> muaGiaiPage = muaGiaiService.filter(filterMuaGiaiDto, pageable);
+        return ResponseEntity.ok(muaGiaiPage.map(this::toDto));
     }
 
     @PostMapping
+    @Operation(summary = "Create mua giai")
     public ResponseEntity<MuaGiaiDto> createMuaGiai(@RequestBody CreateMuaGiaiDto createMuaGiaiDto) {
         return ResponseEntity.ok().body(toDto(muaGiaiService.createMuaGiai(createMuaGiaiDto)));
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update mua giai")
     public ResponseEntity<MuaGiaiDto> updateMuaGiai(@PathVariable("id") Long id, @RequestBody UpdateMuaGiaiDto updateMuaGiaiDto) {
         return ResponseEntity.ok().body(toDto(muaGiaiService.updateMuaGiai(id, updateMuaGiaiDto)));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete mua giai")
     public ResponseEntity<MuaGiai> deleteMuaGiai(@PathVariable("id") Long id) {
         muaGiaiService.deleteMuaGiai(id);
         return ResponseEntity.ok().build();
