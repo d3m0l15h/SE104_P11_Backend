@@ -2,6 +2,7 @@ package com.uit.backendapi.bxh;
 
 import com.uit.backendapi.Utils;
 import com.uit.backendapi.bxh.dto.CreateBxhDto;
+import com.uit.backendapi.bxh.dto.FilterBangXepHangDto;
 import com.uit.backendapi.bxh.dto.UpdateBxhDto;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
@@ -9,10 +10,14 @@ import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.mua_giai.MuaGiai;
 import com.uit.backendapi.mua_giai.MuaGiaiRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +40,6 @@ public class BangXepHangService implements IBangXepHangService {
         return bangXepHangRepository.findByMaMuaGiaiOrderByDiemDescSoTranThangDescHieuSoDescSoBanThangDesc(muaGiai);
     }
 
-
     @Override
     public BangXepHang getBangXepHangByMaDoiAndMuaGiai(Long maDoi, Long maMuaGiai) {
         DoiBong doiBong = doiBongRepository.findById(maDoi).orElse(null);
@@ -48,6 +52,35 @@ public class BangXepHangService implements IBangXepHangService {
     @Override
     public BangXepHang getBangXepHangByMaDoiAndMuaGiai(DoiBong doiBong, MuaGiai muaGiai) {
         return bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiBong, muaGiai).orElse(null);
+    }
+
+    @Override
+    public Page<BangXepHang> filter(FilterBangXepHangDto filterBangXepHangDto, Pageable pageable) {
+        List<BangXepHang> bangXepHangs = bangXepHangRepository.findAll().stream()
+                .filter(bangXepHang -> filterBangXepHangDto.getMaDoi() == null
+                        || bangXepHang.getMaDoi().getId().equals(filterBangXepHangDto.getMaDoi()))
+                .filter(bangXepHang -> filterBangXepHangDto.getMaMuaGiai() == null
+                        || bangXepHang.getMaMuaGiai().getId().equals(filterBangXepHangDto.getMaMuaGiai()))
+                .filter(bangXepHang -> filterBangXepHangDto.getDiem() == null
+                        || bangXepHang.getDiem().equals(filterBangXepHangDto.getDiem()))
+                .filter(bangXepHang -> filterBangXepHangDto.getSoTranThang() == null
+                        || bangXepHang.getSoTranThang().equals(filterBangXepHangDto.getSoTranThang()))
+                .filter(bangXepHang -> filterBangXepHangDto.getSoTranHoa() == null
+                        || bangXepHang.getSoTranHoa().equals(filterBangXepHangDto.getSoTranHoa()))
+                .filter(bangXepHang -> filterBangXepHangDto.getSoTranThua() == null
+                        || bangXepHang.getSoTranThua().equals(filterBangXepHangDto.getSoTranThua()))
+                .filter(bangXepHang -> filterBangXepHangDto.getSoBanThang() == null
+                        || bangXepHang.getSoBanThang().equals(filterBangXepHangDto.getSoBanThang()))
+                .filter(bangXepHang -> filterBangXepHangDto.getSoBanThua() == null
+                        || bangXepHang.getSoBanThua().equals(filterBangXepHangDto.getSoBanThua()))
+                .filter(bangXepHang -> filterBangXepHangDto.getHieuSo() == null
+                        || bangXepHang.getHieuSo().equals(filterBangXepHangDto.getHieuSo()))
+                .filter(bangXepHang -> filterBangXepHangDto.getDiem() == null
+                        || bangXepHang.getDiem().equals(filterBangXepHangDto.getDiem()))
+                .toList();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), bangXepHangs.size());
+        return new PageImpl<>(bangXepHangs.subList(start, end), pageable, bangXepHangs.size());
     }
 
     @Override
@@ -126,14 +159,14 @@ public class BangXepHangService implements IBangXepHangService {
         BangXepHang bxhDoiNha = getBangXepHangByMaDoiAndMuaGiai(doiNha, muaGiai);
         BangXepHang bxhDoiKhach = getBangXepHangByMaDoiAndMuaGiai(doiKhach, muaGiai);
 
-        if(soBanThangDoiNha > soBanThangDoiKhach) {
+        if (soBanThangDoiNha > soBanThangDoiKhach) {
             //Diem doi nha
             bxhDoiNha.setDiem(bxhDoiNha.getDiem() - 3);
             //So tran thang doi nha
             bxhDoiNha.setSoTranThang(bxhDoiNha.getSoTranThang() - 1);
             //So tran thua doi khach
             bxhDoiKhach.setSoTranThua(bxhDoiKhach.getSoTranThua() - 1);
-        } else if(soBanThangDoiNha == soBanThangDoiKhach) {
+        } else if (soBanThangDoiNha == soBanThangDoiKhach) {
             //Diem
             bxhDoiNha.setDiem(bxhDoiNha.getDiem() - 1);
             bxhDoiKhach.setDiem(bxhDoiKhach.getDiem() - 1);
@@ -168,14 +201,14 @@ public class BangXepHangService implements IBangXepHangService {
         BangXepHang bxhDoiNha = getBangXepHangByMaDoiAndMuaGiai(doiNha, muaGiai);
         BangXepHang bxhDoiKhach = getBangXepHangByMaDoiAndMuaGiai(doiKhach, muaGiai);
 
-        if(soBanThangDoiNha > soBanThangDoiKhach) {
+        if (soBanThangDoiNha > soBanThangDoiKhach) {
             //Diem doi nha
             bxhDoiNha.setDiem(bxhDoiNha.getDiem() + 3);
             //So tran thang doi nha
             bxhDoiNha.setSoTranThang(bxhDoiNha.getSoTranThang() + 1);
             //So tran thua doi khach
             bxhDoiKhach.setSoTranThua(bxhDoiKhach.getSoTranThua() + 1);
-        } else if(soBanThangDoiNha == soBanThangDoiKhach) {
+        } else if (soBanThangDoiNha == soBanThangDoiKhach) {
             //Diem
             bxhDoiNha.setDiem(bxhDoiNha.getDiem() + 1);
             bxhDoiKhach.setDiem(bxhDoiKhach.getDiem() + 1);
