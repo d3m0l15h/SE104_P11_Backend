@@ -27,7 +27,7 @@ services:
     environment:
       MYSQL_URL: jdbc:mysql://mysql:3306/QuanLyGiaiVoDichBongDa?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
     volumes:
-      - .env:/app/.env
+      - .env:/.env
     ports:
       - "8080:8080"
     depends_on:
