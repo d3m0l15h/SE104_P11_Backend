@@ -1,15 +1,16 @@
 package com.uit.backendapi.lich;
 
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
-import com.uit.backendapi.lich.dto.LichThiDauDto;
+import com.uit.backendapi.lich.dto.FilterLichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ILichThiDauService {
     LichThiDau createLichThiDau(CreateLichThiDauDto createLichThiDauDto);
     LichThiDau updateLichThiDau(Long id, UpdateLichThiDauDto updateLichThiDauDto);
+    Page<LichThiDau> filter(FilterLichThiDauDto filterLichThiDauDto, Pageable pageable);
     LichThiDau getLichThiDauById(Long id);
-    List<LichThiDau> getAllLichThiDau();
+    Page<LichThiDau> getAllLichThiDau(Pageable pageable);
     void deleteLichThiDau(Long id);
 }

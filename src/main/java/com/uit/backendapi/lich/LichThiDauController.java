@@ -1,10 +1,17 @@
 package com.uit.backendapi.lich;
 
 import com.uit.backendapi.lich.dto.CreateLichThiDauDto;
+import com.uit.backendapi.lich.dto.FilterLichThiDauDto;
 import com.uit.backendapi.lich.dto.LichThiDauDto;
 import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+@Tag(name = "Lich thi dau")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/lich-thi-dau")
@@ -25,41 +33,55 @@ public class LichThiDauController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LichThiDauDto>> getAllLichThiDau() {
-        return ResponseEntity.ok(lichThiDauService.getAllLichThiDau().stream().map(this::toDto).toList());
+    @Operation(summary = "Get all lich thi dau")
+    public ResponseEntity<Page<LichThiDauDto>> getAllLichThiDau(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort
+    ) {
+        Pageable pageable = PageRequest.of(page,
+                size,
+                Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        Page<LichThiDau> lichThiDauPage = lichThiDauService.getAllLichThiDau(pageable);
+        return ResponseEntity.ok(lichThiDauPage.map(this::toDto));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get lich thi dau by id")
     public ResponseEntity<LichThiDauDto> getLichThiDauById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(toDto(lichThiDauService.getLichThiDauById(id)));
     }
 
-    @GetMapping("/mua-giai/{nam}")
-    public ResponseEntity<List<LichThiDauDto>> getLichThiDauByMuaGiai(
-            @PathVariable("nam") String nam,
-            @RequestParam(name = "vong-thi-dau", required = false) String vongThiDau,
-            @RequestParam(name = "ma-doi-bong", required = false) Long maDoiBong) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByMuaGiai(nam, vongThiDau, maDoiBong).stream().map(this::toDto).toList());
-    }
-
-    @GetMapping("/ngay-thi-dau")
-    public ResponseEntity<List<LichThiDauDto>> getLichThiDauByNgayThiDau(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayThiDauStart,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayThiDauEnd) {
-        return ResponseEntity.ok(lichThiDauService.getLichThiDauByNgayThiDau(ngayThiDauStart, ngayThiDauEnd).stream().map(this::toDto).toList());
+    @PostMapping("/filter")
+    @Operation(summary = "Filter lich thi dau")
+    public ResponseEntity<Page<LichThiDauDto>> filter(
+            @RequestBody FilterLichThiDauDto filter,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort
+    ) {
+        if (filter.getMaMuaGiai() == null) {
+            throw new RuntimeException("Mua giai khong duoc de trong");
+        }
+        Pageable pageable = PageRequest.of(page,
+                size,
+                Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        Page<LichThiDau> lichThiDauPage = lichThiDauService.filter(filter, pageable);
+        return ResponseEntity.ok(lichThiDauPage.map(this::toDto));
     }
 
     @PostMapping
+    @Operation(summary = "Create lich thi dau", description = "Auto create BXH when create LichThiDau")
     public ResponseEntity<LichThiDauDto> createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto) {
-        if(createLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
+        if (createLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
             throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
         }
 
-        if(createLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && createLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
+        if (createLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && createLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
             throw new RuntimeException("Gio thi dau phai lon hon gio hien tai");
         }
 
-        if(createLichThiDauDto.getMaDoiNha().equals(createLichThiDauDto.getMaDoiKhach())) {
+        if (createLichThiDauDto.getMaDoiNha().equals(createLichThiDauDto.getMaDoiKhach())) {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 
@@ -67,16 +89,17 @@ public class LichThiDauController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update lich thi dau", description = "Cannot update LichThiDau if it already have KetQua")
     public ResponseEntity<LichThiDauDto> updateLichThiDau(@PathVariable("id") Long id, @RequestBody UpdateLichThiDauDto updateLichThiDauDto) {
-        if(updateLichThiDauDto.getNgayThiDau() !=null && updateLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
+        if (updateLichThiDauDto.getNgayThiDau() != null && updateLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
             throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
         }
 
-        if(updateLichThiDauDto.getNgayThiDau() !=null && updateLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && updateLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
+        if (updateLichThiDauDto.getNgayThiDau() != null && updateLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && updateLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
             throw new RuntimeException("Gio thi dau phai lon hon gio hien tai");
         }
 
-        if(updateLichThiDauDto.getMaDoiNha() !=null &&  updateLichThiDauDto.getMaDoiNha().equals(updateLichThiDauDto.getMaDoiKhach())) {
+        if (updateLichThiDauDto.getMaDoiNha() != null && updateLichThiDauDto.getMaDoiNha().equals(updateLichThiDauDto.getMaDoiKhach())) {
             throw new RuntimeException("Doi nha va doi khach phai khac nhau");
         }
 
@@ -84,6 +107,7 @@ public class LichThiDauController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete lich thi dau")
     public ResponseEntity<Void> deleteLichThiDau(@PathVariable("id") Long id) {
         lichThiDauService.deleteLichThiDau(id);
         return ResponseEntity.noContent().build();

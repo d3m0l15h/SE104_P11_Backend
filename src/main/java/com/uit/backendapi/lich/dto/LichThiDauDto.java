@@ -21,7 +21,7 @@ public class LichThiDauDto {
     private String sanThiDau;
     private DoiBongLichThiDauDto maDoiNha;
     private DoiBongLichThiDauDto maDoiKhach;
-    private MuaGiaiSimpleDto maMuaGiai;
-    private Set<DoiHinhRaSan> doiHinhRaSans;
+//    private Set<DoiHinhRaSan> doiHinhRaSans;
     private KetQuaThiDauLichDto ketQuaThiDau;
+    private MuaGiaiSimpleDto maMuaGiai;
 }

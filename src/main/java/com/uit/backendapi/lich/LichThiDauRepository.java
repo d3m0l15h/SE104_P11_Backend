@@ -9,11 +9,5 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface LichThiDauRepository extends JpaRepository<LichThiDau, Long> {
-    List<LichThiDau> findByMaDoiNhaOrMaDoiKhachOrVongThiDauOrMaMuaGiai(DoiBong maDoiNha, DoiBong maDoiKhach, String vongThiDau, MuaGiai maMuaGiai);
 
-    List<LichThiDau> findByNgayThiDauBetween(LocalDate ngayThiDauStart, LocalDate ngayThiDauEnd);
-
-    Integer countByMaDoiKhachAndMaMuaGiai(DoiBong maDoiKhach, MuaGiai maMuaGiai);
-
-    Integer countByMaDoiNhaAndMaMuaGiai(DoiBong maDoiNha, MuaGiai maMuaGiai);
 }
