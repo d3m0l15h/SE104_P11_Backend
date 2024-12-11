@@ -42,7 +42,7 @@ public class Utils {
         for (java.beans.PropertyDescriptor pd : pds) {
             // Check if value of this property is null then add it to the collection
             Object srcValue = src.getPropertyValue(pd.getName());
-            if (srcValue == null) emptyNames.add(pd.getName());
+            if (srcValue == null || srcValue.equals("")) emptyNames.add(pd.getName());
         }
         return emptyNames;
     }
