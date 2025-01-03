@@ -3,6 +3,8 @@ package com.uit.backendapi.ban_thang;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,20 +21,24 @@ public class BanThang {
     @Column(name = "MaBanThang", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "MaKetQua", nullable = false)
-    private KetQuaThiDau maKetQua;
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "LoaiBanThang", nullable = false, length = 50)
+    private String loaiBanThang;
 
+    @NotNull
+    @Column(name = "ThoiDiem", nullable = false)
+    private Integer thoiDiem;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaCauThu", nullable = false)
     private CauThu maCauThu;
 
-    @Nationalized
-    @Column(name = "LoaiBanThang", nullable = false, length = 50)
-    private String loaiBanThang;
-
-    @Column(name = "ThoiDiem", nullable = false)
-    private Integer thoiDiem;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MaKetQua", nullable = false)
+    private KetQuaThiDau maKetQua;
 
     public BanThang(KetQuaThiDau maKetQua, CauThu maCauThu, String loaiBanThang, Integer thoiDiem) {
         this.maKetQua = maKetQua;
