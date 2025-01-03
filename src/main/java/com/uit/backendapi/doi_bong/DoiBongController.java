@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @Tag(name = "Doi bong")
 @RestController
@@ -54,11 +55,23 @@ public class DoiBongController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id,asc") String[] sort
     ) {
-        Pageable pageable = PageRequest.of( page,
+        Pageable pageable = PageRequest.of(page,
                 size,
                 Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
         Page<DoiBong> doiBongPage = doiBongService.getAllDoiBong(pageable);
         return ResponseEntity.ok(doiBongPage.map(this::toDto));
+    }
+
+    @GetMapping("/mua-giai/{id}")
+    @Operation(summary = "Get doi bong by mua giai id")
+    public ResponseEntity<List<DoiBongDto>> getDoiBongByMuaGiaiId(
+            @PathVariable("id") Long id
+    ) {
+
+        return ResponseEntity.ok(doiBongService.getDoiBongByMuaGiaiId(id).stream()
+                .map(this::toDto)
+                .toList()
+        );
     }
 
     @GetMapping("/{id}")
@@ -71,9 +84,6 @@ public class DoiBongController {
     @Operation(summary = "Create doi bong")
     @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = CreateDoiBongDto.class)))
     public ResponseEntity<DoiBongDto> createDoiBong(@ModelAttribute CreateDoiBongDto createDoiBongDto) throws IOException {
-        if (createDoiBongDto.getAoChinhThuc() == null || createDoiBongDto.getAoDuBi() == null || createDoiBongDto.getLogo() == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(toDto(doiBongService.createDoiBong(createDoiBongDto)));
     }
 

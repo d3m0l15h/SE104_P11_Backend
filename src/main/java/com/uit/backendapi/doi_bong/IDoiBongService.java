@@ -14,6 +14,8 @@ public interface IDoiBongService {
 
     Page<DoiBong> filter(FilterDoiBongDto filterDoiBongDto, Pageable pageable);
 
+    List<DoiBong> getDoiBongByMuaGiaiId(Long id);
+
     DoiBong getDoiBongById(Long id);
 
     DoiBong createDoiBong(CreateDoiBongDto createDoiBongDto) throws IOException;

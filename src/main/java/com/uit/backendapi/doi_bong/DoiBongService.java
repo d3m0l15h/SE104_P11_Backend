@@ -3,10 +3,15 @@ package com.uit.backendapi.doi_bong;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.uit.backendapi.Utils;
+import com.uit.backendapi.bxh.BangXepHang;
+import com.uit.backendapi.bxh.BangXepHangRepository;
+import com.uit.backendapi.bxh.BangXepHangService;
 import com.uit.backendapi.doi_bong.dto.CreateDoiBongDto;
 import com.uit.backendapi.doi_bong.dto.FilterDoiBongDto;
 import com.uit.backendapi.doi_bong.dto.UpdateDoiBongDto;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
+import com.uit.backendapi.mua_giai.MuaGiai;
+import com.uit.backendapi.mua_giai.MuaGiaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -23,14 +28,13 @@ import java.util.stream.Collectors;
 @Service
 public class DoiBongService implements IDoiBongService {
     private final DoiBongRepository doiBongRepository;
+    private final BangXepHangRepository bangXepHangRepository;
+    private final MuaGiaiRepository muaGiaiRepository;
     private final Cloudinary cloudinary;
 
     @Override
     public Page<DoiBong> getAllDoiBong(Pageable pageable) {
-        List<DoiBong> doiBongs = doiBongRepository.findAll();
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), doiBongs.size());
-        return new PageImpl<>(doiBongs.subList(start, end), pageable, doiBongs.size());
+        return doiBongRepository.findAll(pageable);
     }
 
     @Override
@@ -41,8 +45,20 @@ public class DoiBongService implements IDoiBongService {
     }
 
     @Override
+    public List<DoiBong> getDoiBongByMuaGiaiId(Long id) {
+        MuaGiai muaGiai = muaGiaiRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Mua giai not found")
+        );
+
+        return bangXepHangRepository.findByMaMuaGiai(muaGiai).stream()
+                .map(BangXepHang::getMaDoi)
+                .toList();
+    }
+
+
+    @Override
     public Page<DoiBong> filter(FilterDoiBongDto filterDoiBongDto, Pageable pageable) {
-        List<DoiBong> doiBongs = doiBongRepository.findAll().stream()
+        List<DoiBong> doiBongs = doiBongRepository.findAll(pageable).stream()
                 .filter(doiBong -> filterDoiBongDto.getTenDoi() == null
                         || doiBong.getTenDoi().equals(filterDoiBongDto.getTenDoi()))
                 .filter(doiBong -> filterDoiBongDto.getTenSanNha() == null
@@ -58,9 +74,8 @@ public class DoiBongService implements IDoiBongService {
                 .filter(doiBong -> filterDoiBongDto.getThanhPhoTrucThuoc() == null
                         || doiBong.getThanhPhoTrucThuoc().equals(filterDoiBongDto.getThanhPhoTrucThuoc()))
                 .toList();
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), doiBongs.size());
-        return new PageImpl<>(doiBongs.subList(start, end), pageable, doiBongs.size());
+
+        return new PageImpl<>(doiBongs, pageable, doiBongs.size());
     }
 
     @Override
@@ -74,13 +89,20 @@ public class DoiBongService implements IDoiBongService {
 
         String folder = "doi-bong/" + doiBong.getId();
 
-        String logoUrl = uploadToCloudinary(createDoiBongDto.getLogo().getBytes(), folder, doiBong.getId() + "_logo");
-        String aoChinhThucUrl = uploadToCloudinary(createDoiBongDto.getAoChinhThuc().getBytes(), folder, doiBong.getId() + "_ao_chinh_thuc");
-        String aoDuBiUrl = uploadToCloudinary(createDoiBongDto.getAoDuBi().getBytes(), folder, doiBong.getId() + "_ao_du_bi");
+        if (createDoiBongDto.getLogo() != null) {
+            String logoUrl = uploadToCloudinary(createDoiBongDto.getLogo().getBytes(), folder, doiBong.getId() + "_logo");
+            doiBong.setLogo(logoUrl);
+        }
 
-        doiBong.setLogo(logoUrl);
-        doiBong.setAoChinhThuc(aoChinhThucUrl);
-        doiBong.setAoDuBi(aoDuBiUrl);
+        if (createDoiBongDto.getAoChinhThuc() != null) {
+            String aoChinhThucUrl = uploadToCloudinary(createDoiBongDto.getAoChinhThuc().getBytes(), folder, doiBong.getId() + "_ao_chinh_thuc");
+            doiBong.setAoChinhThuc(aoChinhThucUrl);
+        }
+
+        if (createDoiBongDto.getAoDuBi() != null) {
+            String aoDuBiUrl = uploadToCloudinary(createDoiBongDto.getAoDuBi().getBytes(), folder, doiBong.getId() + "_ao_du_bi");
+            doiBong.setAoDuBi(aoDuBiUrl);
+        }
 
         return doiBongRepository.save(doiBong);
     }
