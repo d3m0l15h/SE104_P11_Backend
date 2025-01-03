@@ -6,5 +6,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class UpdateMuaGiaiDto extends CreateMuaGiaiDto{
-
+    private Long doiVoDich;
 }

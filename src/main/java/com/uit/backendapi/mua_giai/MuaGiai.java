@@ -3,12 +3,14 @@ package com.uit.backendapi.mua_giai;
 import com.uit.backendapi.bxh.BangXepHang;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.lich.LichThiDau;
+import com.uit.backendapi.mua_giai.dto.CreateMuaGiaiDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -28,6 +30,12 @@ public class MuaGiai {
     @Column(name = "Nam", nullable = false, length = 50)
     private String nam;
 
+    @Column(name = "NgayBatDau", nullable = false)
+    private LocalDate ngayBatDau;
+
+    @Column(name = "NgayKetThuc", nullable = false)
+    private LocalDate ngayKetThuc;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @ColumnDefault("NULL")
     @JoinColumn(name = "DoiVoDich")
@@ -39,7 +47,9 @@ public class MuaGiai {
     @OneToMany(mappedBy = "maMuaGiai")
     private Set<LichThiDau> lichThiDaus = new LinkedHashSet<>();
 
-    public MuaGiai(String nam) {
-        this.nam = nam;
+    public MuaGiai(CreateMuaGiaiDto createMuaGiaiDto) {
+        this.nam = createMuaGiaiDto.getNam();
+        this.ngayBatDau = createMuaGiaiDto.getNgayBatDau();
+        this.ngayKetThuc = createMuaGiaiDto.getNgayKetThuc();
     }
 }

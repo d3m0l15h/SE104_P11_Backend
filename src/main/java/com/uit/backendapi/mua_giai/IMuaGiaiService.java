@@ -19,5 +19,7 @@ public interface IMuaGiaiService {
 
     MuaGiai updateMuaGiai(Long id, UpdateMuaGiaiDto updateMuaGiaiDto);
 
+    MuaGiai getMuaGiaiById(Long id);
+
     void deleteMuaGiai(Long id);
 }

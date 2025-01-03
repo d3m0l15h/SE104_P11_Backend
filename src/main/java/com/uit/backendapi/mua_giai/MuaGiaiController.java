@@ -1,6 +1,8 @@
 package com.uit.backendapi.mua_giai;
 
 
+import com.uit.backendapi.lich.LichThiDau;
+import com.uit.backendapi.lich.LichThiDauRepository;
 import com.uit.backendapi.mua_giai.dto.CreateMuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.FilterMuaGiaiDto;
 import com.uit.backendapi.mua_giai.dto.MuaGiaiDto;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Tag(name = "Mua giai")
@@ -41,7 +44,6 @@ public class MuaGiaiController {
                 Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
         return  muaGiaiService.getAllMuaGiai(pageable).map(this::toDto);
     }
-
 
     @PostMapping("/filter")
     @Operation(summary = "Filter mua giai with pagination")
@@ -69,9 +71,15 @@ public class MuaGiaiController {
         return ResponseEntity.ok().body(toDto(muaGiaiService.updateMuaGiai(id, updateMuaGiaiDto)));
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Get mua giai by id")
+    public ResponseEntity<MuaGiaiDto> getMuaGiaiById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(toDto(muaGiaiService.getMuaGiaiById(id)));
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete mua giai")
-    public ResponseEntity<MuaGiai> deleteMuaGiai(@PathVariable("id") Long id) {
+    public ResponseEntity<MuaGiaiDto> deleteMuaGiai(@PathVariable("id") Long id) {
         muaGiaiService.deleteMuaGiai(id);
         return ResponseEntity.ok().build();
     }
