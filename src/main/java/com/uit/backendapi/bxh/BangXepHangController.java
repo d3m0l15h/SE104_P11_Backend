@@ -2,11 +2,11 @@ package com.uit.backendapi.bxh;
 
 import com.uit.backendapi.bxh.dto.BangXepHangDto;
 import com.uit.backendapi.bxh.dto.BangXepHangMuaGiaiDto;
+import com.uit.backendapi.bxh.dto.CreateBxhDto;
 import com.uit.backendapi.bxh.dto.FilterBangXepHangDto;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.cau_thu.dto.CauThuDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,6 +26,12 @@ public class BangXepHangController {
 
     private BangXepHangDto toDto(BangXepHang bangXepHang) {
         return modelMapper.map(bangXepHang, BangXepHangDto.class);
+    }
+
+    @PostMapping("/create")
+    @Operation(summary = "Create bang xep hang by mua giai")
+    public BangXepHangDto createBangXepHang(@org.springframework.web.bind.annotation.RequestBody CreateBxhDto createBxhDto) {
+        return toDto(bangXepHangService.createBangXepHang(createBxhDto));
     }
 
     @PostMapping("/filter")
