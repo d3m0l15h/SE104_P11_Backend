@@ -2,6 +2,7 @@ package com.uit.backendapi.ket_qua;
 
 import com.uit.backendapi.ban_thang.BanThang;
 import com.uit.backendapi.cau_thu.CauThu;
+import com.uit.backendapi.ket_qua.dto.CreateKetQuaThiDauDto;
 import com.uit.backendapi.lich.LichThiDau;
 import com.uit.backendapi.thay_nguoi.ThayNguoi;
 import com.uit.backendapi.the_phat.ThePhat;
@@ -19,18 +20,16 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "KetQuaThiDau", schema = "QuanLyGiaiVoDichBongDa", uniqueConstraints = {
-        @UniqueConstraint(name = "KetQuaThiDau_pk", columnNames = {"MaLichThiDau"})
-})
+@Table(name = "KetQuaThiDau", schema = "QuanLyGiaiVoDichBongDa")
 public class KetQuaThiDau {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaKetQua", nullable = false)
     private Integer id;
 
+    @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "MaLichThiDau", nullable = false)
-    private LichThiDau maLichThiDau;
+    @JoinColumn(name = "MaKetQua", nullable = false)
+    private LichThiDau lichThiDau;
 
     @ColumnDefault("0")
     @Column(name = "SoBanDoiNha", nullable = false)
@@ -57,11 +56,19 @@ public class KetQuaThiDau {
     @OneToMany(mappedBy = "maKetQua")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();
 
-    public KetQuaThiDau( LichThiDau maLichThiDau, Integer soBanDoiNha, String ghiChu, Integer soBanDoiKhach) {
-        this.maLichThiDau = maLichThiDau;
-        this.soBanDoiNha = soBanDoiNha;
+    public KetQuaThiDau(CreateKetQuaThiDauDto createKetQuaThiDauDto, LichThiDau lichThiDau) {
+        this.lichThiDau = lichThiDau;
+        this.soBanDoiNha = 0;
+        this.ghiChu = createKetQuaThiDauDto.getGhiChu();
+        this.soBanDoiKhach = 0;
+    }
+
+    public KetQuaThiDau(LichThiDau lichThiDau, Integer soBanDoiNha, CauThu cauThuXuatSac, String ghiChu, Integer soBanDoiKhach) {
+        this.lichThiDau = lichThiDau;
+        this.soBanDoiNha = 0;
+        this.cauThuXuatSac = cauThuXuatSac;
         this.ghiChu = ghiChu;
-        this.soBanDoiKhach = soBanDoiKhach;
+        this.soBanDoiKhach = 0;
     }
 
 }

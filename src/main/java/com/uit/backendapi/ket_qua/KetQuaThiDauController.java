@@ -118,15 +118,15 @@ public class KetQuaThiDauController {
         return ResponseEntity.ok(toBanThangDto(banThangService.createBanThangByKetQua(ketQuaThiDau, createBanThangDto)));
     }
 
-    @PutMapping("/{id}/ban-thang/{maBanThang}")
-    @Tag(name = "Ban thang")
-    @Operation(summary = "Update ban thang")
-    public ResponseEntity<BanThangDto> updateBanThang(@PathVariable("id") Long id,
-                                                   @PathVariable("maBanThang") Long maBanThang,
-                                                   @RequestBody UpdateBanThangDto updateBanThangDto) {
-        KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(toBanThangDto(banThangService.updateBanThangByKetQuaAndId(ketQuaThiDau, maBanThang, updateBanThangDto)));
-    }
+//    @PutMapping("/{id}/ban-thang/{maBanThang}")
+//    @Tag(name = "Ban thang")
+//    @Operation(summary = "Update ban thang")
+//    public ResponseEntity<BanThangDto> updateBanThang(@PathVariable("id") Long id,
+//                                                   @PathVariable("maBanThang") Long maBanThang,
+//                                                   @RequestBody UpdateBanThangDto updateBanThangDto) {
+//        KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
+//        return ResponseEntity.ok(toBanThangDto(banThangService.updateBanThangByKetQuaAndId(ketQuaThiDau, maBanThang, updateBanThangDto)));
+//    }
 
     @DeleteMapping("/{id}/ban-thang/{maBanThang}")
     @Tag(name = "Ban thang")
@@ -154,15 +154,16 @@ public class KetQuaThiDauController {
         return ResponseEntity.ok(toThePhatDto(thePhatService.createThePhatByMaKetQua(ketQuaThiDau, createThePhatDto)));
     }
 
-    @PutMapping("/{id}/the-phat/{maThePhat}")
-    @Tag(name = "The phat")
-    @Operation(summary = "Update the phat")
-    public ResponseEntity<ThePhatDto> updateThePhat(@PathVariable("id") Long id,
-                                                @PathVariable("maThePhat") Long maThePhat,
-                                                @RequestBody UpdateThePhatDto updateThePhatDto) {
-        KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(toThePhatDto(thePhatService.updateThePhatByMaKetQuaAndId(ketQuaThiDau, maThePhat, updateThePhatDto)));
-    }
+//    @PutMapping("/{id}/the-phat/{maThePhat}")
+//    @Tag(name = "The phat")
+//    @Operation(summary = "Update the phat")
+//    public ResponseEntity<ThePhatDto> updateThePhat(@PathVariable("id") Long id,
+//                                                @PathVariable("maThePhat") Long maThePhat,
+//                                                @RequestBody UpdateThePhatDto updateThePhatDto)
+//    {
+//        KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
+//        return ResponseEntity.ok(toThePhatDto(thePhatService.updateThePhatByMaKetQuaAndId(ketQuaThiDau, maThePhat, updateThePhatDto)));
+//    }
 
     @DeleteMapping("/{id}/the-phat/{maThePhat}")
     @Tag(name = "The phat")
@@ -190,15 +191,15 @@ public class KetQuaThiDauController {
         return ResponseEntity.ok(toThayNguoiDto(thayNguoiService.createThayNguoiByKetQua(ketQuaThiDau, createThayNguoiDto)));
     }
 
-    @PutMapping("/{id}/thay-nguoi/{maThayNguoi}")
-    @Tag(name = "Thay nguoi")
-    @Operation(summary = "Update thay nguoi")
-    public ResponseEntity<ThayNguoiDto> updateThayNguoi(@PathVariable("id") Long id,
-                                                     @PathVariable("maThayNguoi") Long maThayNguoi,
-                                                     @RequestBody UpdateThayNguoiDto updateThayNguoiDto) {
-        KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
-        return ResponseEntity.ok(toThayNguoiDto(thayNguoiService.updateThayNguoiByKetQuaAndId(ketQuaThiDau, maThayNguoi, updateThayNguoiDto)));
-    }
+//    @PutMapping("/{id}/thay-nguoi/{maThayNguoi}")
+//    @Tag(name = "Thay nguoi")
+//    @Operation(summary = "Update thay nguoi")
+//    public ResponseEntity<ThayNguoiDto> updateThayNguoi(@PathVariable("id") Long id,
+//                                                     @PathVariable("maThayNguoi") Long maThayNguoi,
+//                                                     @RequestBody UpdateThayNguoiDto updateThayNguoiDto) {
+//        KetQuaThiDau ketQuaThiDau = ketQuaThiDauService.getKetQuaThiDauById(id);
+//        return ResponseEntity.ok(toThayNguoiDto(thayNguoiService.updateThayNguoiByKetQuaAndId(ketQuaThiDau, maThayNguoi, updateThayNguoiDto)));
+//    }
 
     @DeleteMapping("/{id}/thay-nguoi/{maThayNguoi}")
     @Tag(name = "Thay nguoi")

@@ -5,5 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class UpdateKetQuaThiDauDto extends CreateKetQuaThiDauDto {
+public class UpdateKetQuaThiDauDto {
+    private Long cauThuXuatSac;
+    private String ghiChu;
 }
