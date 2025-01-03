@@ -3,6 +3,7 @@ package com.uit.backendapi.thay_nguoi;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,18 +20,22 @@ public class ThayNguoi {
     @Column(name = "MaThayNguoi", nullable = false)
     private Integer id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaKetQua", nullable = false)
     private KetQuaThiDau maKetQua;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaCauThuVao", nullable = false)
     private CauThu maCauThuVao;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaCauThuRa", nullable = false)
     private CauThu maCauThuRa;
 
+    @NotNull
     @Column(name = "ThoiDiem", nullable = false)
     private Integer thoiDiem;
 

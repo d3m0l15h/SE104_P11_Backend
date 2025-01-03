@@ -6,5 +6,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class UpdateThayNguoiDto extends CreateThayNguoiDto{
-
+    private Long id;
 }
