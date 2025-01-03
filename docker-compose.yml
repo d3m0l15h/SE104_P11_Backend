@@ -10,17 +10,6 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root@123
-    ports:
-      - "8081:80"
-    depends_on:
-      - mysql
   api:
     image: d3m0l15h/backend-api:latest
     container_name: api

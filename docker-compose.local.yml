@@ -21,14 +21,3 @@ services:
       - "8081:80"
     depends_on:
       - mysql
-#  api:
-#    image: d3m0l15h/backend-api:latest
-#    container_name: api
-#    environment:
-#      MYSQL_URL: jdbc:mysql://mysql:3306/QuanLyGiaiVoDichBongDa?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
-#    volumes:
-#      - .env:/app/.env
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - mysql
