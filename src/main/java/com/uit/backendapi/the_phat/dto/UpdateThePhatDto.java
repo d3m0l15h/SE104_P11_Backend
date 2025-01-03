@@ -6,4 +6,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class UpdateThePhatDto extends CreateThePhatDto{
+    private Long id;
 }

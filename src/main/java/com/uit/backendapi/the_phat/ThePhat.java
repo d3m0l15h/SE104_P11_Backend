@@ -3,6 +3,7 @@ package com.uit.backendapi.the_phat;
 import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class ThePhat {
     @Column(name = "ThoiDiem", nullable = false)
     private Integer thoiDiem;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaKetQua", nullable = false)
     private KetQuaThiDau maKetQua;

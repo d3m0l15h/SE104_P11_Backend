@@ -5,10 +5,12 @@ import com.uit.backendapi.cau_thu.CauThu;
 import com.uit.backendapi.cau_thu.CauThuRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
+import com.uit.backendapi.qui_dinh.QuiDinhRepository;
+import com.uit.backendapi.thay_nguoi.ThayNguoiRepository;
 import com.uit.backendapi.the_phat.dto.CreateThePhatDto;
 import com.uit.backendapi.the_phat.dto.UpdateThePhatDto;
+import com.uit.backendapi.utils.KetQuaUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
 public class ThePhatService implements IThePhatService {
     private final ThePhatRepository thePhatRepository;
     private final CauThuRepository cauThuRepository;
+    private final ThayNguoiRepository thayNguoiRepository;
+    private final QuiDinhRepository quiDinhRepository;
 
     @Override
     public List<ThePhat> getThePhatByMaKetQua(KetQuaThiDau maKetQua) {
@@ -28,6 +32,16 @@ public class ThePhatService implements IThePhatService {
     public ThePhat createThePhatByMaKetQua(KetQuaThiDau ketQuaThiDau, CreateThePhatDto createThePhatDto) {
         CauThu cauThu = cauThuRepository.findById(createThePhatDto.getMaCauThu())
                 .orElseThrow(() -> new ResourceNotFoundException("Cau thu not found with id: " + createThePhatDto.getMaCauThu()));
+
+        //----------------------------------------VALIDATION----------------------------------------
+        KetQuaUtils.thoiDiemValidation(createThePhatDto.getThoiDiem(), quiDinhRepository);
+
+        KetQuaUtils.cauThuValidation(ketQuaThiDau, cauThu, createThePhatDto.getThoiDiem(), thayNguoiRepository);
+
+        KetQuaUtils.thePhatValidation(ketQuaThiDau, cauThu,
+                createThePhatDto.getThoiDiem(), thePhatRepository, "the phat");
+
+        //----------------------------------------CREATE----------------------------------------
 
         ThePhat thePhat = new ThePhat(
                 cauThu,
@@ -53,8 +67,19 @@ public class ThePhatService implements IThePhatService {
         if (updateThePhatDto.getMaCauThu() != null) {
             CauThu cauThu = cauThuRepository.findById(updateThePhatDto.getMaCauThu())
                     .orElseThrow(() -> new ResourceNotFoundException("Cau thu not found with id: " + updateThePhatDto.getMaCauThu()));
+
+            //----------------------------------------VALIDATION----------------------------------------
+            KetQuaUtils.thoiDiemValidation(updateThePhatDto.getThoiDiem(), quiDinhRepository);
+
+            KetQuaUtils.cauThuValidation(existingThePhat.getMaKetQua(), cauThu, existingThePhat.getThoiDiem(), thayNguoiRepository);
+
+            KetQuaUtils.thePhatValidation(existingThePhat.getMaKetQua(), cauThu,
+                    existingThePhat.getThoiDiem(), thePhatRepository,"the phat");
+            //----------------------------------------UPDATE----------------------------------------
+
             existingThePhat.setMaCauThu(cauThu);
         }
+
 
         return existingThePhat;
     }
