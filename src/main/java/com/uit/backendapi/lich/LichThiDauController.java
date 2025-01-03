@@ -7,6 +7,7 @@ import com.uit.backendapi.lich.dto.UpdateLichThiDauDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,15 +71,15 @@ public class LichThiDauController {
         return ResponseEntity.ok(lichThiDauPage.map(this::toDto));
     }
 
-    @PostMapping
-    @Operation(summary = "Create lich thi dau", description = "Auto create BXH when create LichThiDau")
-    public ResponseEntity<LichThiDauDto> createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto) {
+    @PostMapping("{muaGiaiId}")
+    @Operation(summary = "Create lich thi dau", description = "Create LichThiDau with MuaGiai")
+    public ResponseEntity<LichThiDauDto> createLichThiDau(@RequestBody CreateLichThiDauDto createLichThiDauDto, @PathVariable String muaGiaiId) throws BadRequestException {
         if (createLichThiDauDto.getNgayThiDau().isBefore(LocalDate.now())) {
-            throw new RuntimeException("Ngay thi dau phai lon hon ngay hien tai");
+            throw new BadRequestException("Ngay thi dau phai lon hon ngay hien tai");
         }
 
         if (createLichThiDauDto.getNgayThiDau().isEqual(LocalDate.now()) && createLichThiDauDto.getGioThiDau().isBefore(LocalTime.now())) {
-            throw new RuntimeException("Gio thi dau phai lon hon gio hien tai");
+            throw new BadRequestException("Gio thi dau phai lon hon gio hien tai");
         }
 
         if (createLichThiDauDto.getMaDoiNha().equals(createLichThiDauDto.getMaDoiKhach())) {
@@ -108,8 +109,8 @@ public class LichThiDauController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete lich thi dau")
-    public ResponseEntity<Void> deleteLichThiDau(@PathVariable("id") Long id) {
-        lichThiDauService.deleteLichThiDau(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteLichThiDau(@PathVariable("id") Long id) throws RuntimeException {
+        return lichThiDauService.deleteLichThiDau(id);
+
     }
 }

@@ -1,9 +1,6 @@
 package com.uit.backendapi.lich;
 
 import com.uit.backendapi.Utils;
-import com.uit.backendapi.bxh.BangXepHang;
-import com.uit.backendapi.bxh.BangXepHangRepository;
-import com.uit.backendapi.bxh.BangXepHangService;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.doi_bong.DoiBongRepository;
 import com.uit.backendapi.exceptions.ResourceNotFoundException;
@@ -16,11 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,15 +24,10 @@ public class LichThiDauService implements ILichThiDauService {
     private final LichThiDauRepository lichThiDauRepository;
     private final DoiBongRepository doiBongRepository;
     private final MuaGiaiRepository muaGiaiRepository;
-    private final BangXepHangRepository bangXepHangRepository;
-    private final BangXepHangService bangXepHangService;
 
     @Override
     public Page<LichThiDau> getAllLichThiDau(Pageable pageable) {
-        List<LichThiDau> lichThiDaus = lichThiDauRepository.findAll();
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), lichThiDaus.size());
-        return new PageImpl<>(lichThiDaus.subList(start, end), pageable, lichThiDaus.size());
+        return lichThiDauRepository.findAll(pageable);
     }
 
     @Override
@@ -48,20 +39,19 @@ public class LichThiDauService implements ILichThiDauService {
 
     @Override
     public Page<LichThiDau> filter(FilterLichThiDauDto filter, Pageable pageable) {
-        List<LichThiDau> lichThiDaus = lichThiDauRepository.findAll().stream()
+        List<LichThiDau> lichThiDaus = lichThiDauRepository.findAll(pageable).stream()
                 .filter(dto -> filter.getVongThiDau() == null || dto.getVongThiDau().equals(filter.getVongThiDau()))
                 .filter(dto -> filter.getNgayThiDau() == null || dto.getNgayThiDau().equals(filter.getNgayThiDau()))
                 .filter(dto -> filter.getSanThiDau() == null || dto.getSanThiDau().equals(filter.getSanThiDau()))
                 .filter(dto -> filter.getMaDoiNha() == null
                         || (dto.getMaDoiNha() != null && dto.getMaDoiNha().getId().equals(filter.getMaDoiNha())))
                 .filter(dto -> filter.getMaDoiKhach() == null
-                        ||  dto.getMaDoiKhach().getId().equals(filter.getMaDoiKhach()))
+                        || dto.getMaDoiKhach().getId().equals(filter.getMaDoiKhach()))
                 .filter(dto -> filter.getMaMuaGiai() == null
-                        ||  dto.getMaMuaGiai().getId().equals(filter.getMaMuaGiai()))
+                        || dto.getMaMuaGiai().getId().equals(filter.getMaMuaGiai()))
                 .toList();
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), lichThiDaus.size());
-        return new PageImpl<>(lichThiDaus.subList(start, end), pageable, lichThiDaus.size());
+
+        return new PageImpl<>(lichThiDaus, pageable, lichThiDaus.size());
     }
 
     @Override
@@ -88,14 +78,6 @@ public class LichThiDauService implements ILichThiDauService {
                 muaGiai
         );
 
-        if (bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiNha, muaGiai).isEmpty()) {
-            bangXepHangService.createBangXepHang(doiNha, muaGiai);
-        }
-
-        if (bangXepHangRepository.findByMaDoiAndMaMuaGiai(doiKhach, muaGiai).isEmpty()) {
-            bangXepHangService.createBangXepHang(doiKhach, muaGiai);
-        }
-
         return lichThiDauRepository.save(lichThiDau);
     }
 
@@ -120,46 +102,39 @@ public class LichThiDauService implements ILichThiDauService {
             existingLichThiDau.setMaDoiNha(doiBongRepository.findById(updateLichThiDauDto.getMaDoiNha()).orElseThrow(
                     () -> new RuntimeException("Doi bong not found with id: " + updateLichThiDauDto.getMaDoiNha())
             ));
-
-            // Create bang xep hang if not exists
-            if (bangXepHangService.getBangXepHangByMaDoiAndMuaGiai(existingLichThiDau.getMaDoiNha(), existingLichThiDau.getMaMuaGiai()) == null) {
-                bangXepHangService.createBangXepHang(existingLichThiDau.getMaDoiNha(), existingLichThiDau.getMaMuaGiai());
-            }
         }
 
         if (updateLichThiDauDto.getMaDoiKhach() != null) {
             existingLichThiDau.setMaDoiKhach(doiBongRepository.findById(updateLichThiDauDto.getMaDoiKhach()).orElseThrow(
                     () -> new RuntimeException("Doi bong not found with id: " + updateLichThiDauDto.getMaDoiKhach())
             ));
-
-            if (bangXepHangService.getBangXepHangByMaDoiAndMuaGiai(existingLichThiDau.getMaDoiKhach(), existingLichThiDau.getMaMuaGiai()) == null) {
-                bangXepHangService.createBangXepHang(existingLichThiDau.getMaDoiKhach(), existingLichThiDau.getMaMuaGiai());
-            }
         }
 
         if (updateLichThiDauDto.getMaMuaGiai() != null) {
             existingLichThiDau.setMaMuaGiai(muaGiaiRepository.findById(updateLichThiDauDto.getMaMuaGiai()).orElseThrow(
                     () -> new RuntimeException("Mua giai not found with id: " + updateLichThiDauDto.getMaMuaGiai())
             ));
-
-            if (bangXepHangService.getBangXepHangByMaDoiAndMuaGiai(existingLichThiDau.getMaDoiNha(), existingLichThiDau.getMaMuaGiai()) == null) {
-                bangXepHangService.createBangXepHang(existingLichThiDau.getMaDoiNha(), existingLichThiDau.getMaMuaGiai());
-            }
-
-            if (bangXepHangService.getBangXepHangByMaDoiAndMuaGiai(existingLichThiDau.getMaDoiKhach(), existingLichThiDau.getMaMuaGiai()) == null) {
-                bangXepHangService.createBangXepHang(existingLichThiDau.getMaDoiKhach(), existingLichThiDau.getMaMuaGiai());
-            }
         }
 
         return existingLichThiDau;
     }
 
-    public void deleteLichThiDau(Long id) {
+    public ResponseEntity<Void> deleteLichThiDau(Long id) {
+        LichThiDau lichThiDau = lichThiDauRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Lich thi dau not found with id: " + id)
+        );
+
+        if (lichThiDau.getKetQuaThiDau() != null) {
+            throw new RuntimeException("Cannot delete LichThiDau if it already have KetQua");
+        }
+
         lichThiDauRepository.findById(id).ifPresentOrElse(
                 lichThiDauRepository::delete,
                 () -> {
                     throw new RuntimeException("Lich thi dau not found with id: " + id);
                 }
         );
+
+        return null;
     }
 }
