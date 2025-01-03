@@ -1,6 +1,7 @@
 package com.uit.backendapi.cau_thu;
 
 import com.uit.backendapi.ban_thang.BanThang;
+import com.uit.backendapi.cau_thu.dto.CreateCauThuDto;
 import com.uit.backendapi.doi_bong.DoiBong;
 import com.uit.backendapi.ket_qua.KetQuaThiDau;
 import com.uit.backendapi.models.ChiTietDoiHinh;
@@ -58,6 +59,9 @@ public class CauThu {
     @Column(name = "ViTri", nullable = false, length = 50)
     private String viTri;
 
+    @Column(name = "Avatar", length = 500)
+    private String avatar;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MaDoi", nullable = false)
     private DoiBong maDoi;
@@ -86,17 +90,16 @@ public class CauThu {
     @OneToMany(mappedBy = "maCauThu")
     private Set<ThePhat> thePhats = new LinkedHashSet<>();
 
-    public CauThu(String tenCauThu, LocalDate ngaySinh, String loaiCauThu, DoiBong maDoi, Integer soAo, String viTri, String noiSinh, String quocTich, String tieuSu, Double chieuCao, Double canNang) {
-        this.tenCauThu = tenCauThu;
-        this.ngaySinh = ngaySinh;
-        this.loaiCauThu = loaiCauThu;
-        this.maDoi = maDoi;
-        this.soAo = soAo;
-        this.viTri = viTri;
-        this.noiSinh = noiSinh;
-        this.quocTich = quocTich;
-        this.tieuSu = tieuSu;
-        this.chieuCao = chieuCao;
-        this.canNang = canNang;
+    public CauThu(CreateCauThuDto createCauThuDto) {
+        this.tenCauThu = createCauThuDto.getTenCauThu();
+        this.ngaySinh = createCauThuDto.getNgaySinh();
+        this.loaiCauThu = createCauThuDto.getLoaiCauThu();
+        this.soAo = createCauThuDto.getSoAo();
+        this.viTri = createCauThuDto.getViTri();
+        this.noiSinh = createCauThuDto.getNoiSinh();
+        this.quocTich = createCauThuDto.getQuocTich();
+        this.tieuSu = createCauThuDto.getTieuSu();
+        this.chieuCao = createCauThuDto.getChieuCao();
+        this.canNang = createCauThuDto.getCanNang();
     }
 }

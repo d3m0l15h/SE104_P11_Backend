@@ -11,4 +11,5 @@ public class CauThuSimpleDto {
     private Integer soAo;
     private String viTri;
     private String quocTich;
+    private String avatar;
 }

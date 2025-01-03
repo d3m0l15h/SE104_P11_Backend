@@ -1,6 +1,7 @@
 package com.uit.backendapi.cau_thu.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -15,8 +16,9 @@ public class CreateCauThuDto {
     private String viTri;
     private String noiSinh;
     private String quocTich;
-    private Optional<String> tieuSu;
+    private String tieuSu;
     private Double chieuCao;
     private Double canNang;
+    private MultipartFile avatar;
 }
 

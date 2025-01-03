@@ -23,4 +23,5 @@ public class CauThuDto {
     private String tieuSu;
     private Double chieuCao;
     private Double canNang;
+    private String avatar;
 }
